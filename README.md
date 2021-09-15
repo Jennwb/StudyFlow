@@ -1,2 +1,2 @@
-# microblog
-Ciclo de Estudos - StudyFlow
+# StudyFlow
+Ciclo de Estudos otimizado
