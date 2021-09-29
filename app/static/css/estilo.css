@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.container .col-md-3 .btn {
+    background: #fff;
+    color: rgb(123, 30, 162);
+    border: 4px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    width: 110px;
+}
+
+.container .col-md-3 .btn:hover {
+    background: linear-gradient(94deg, rgba(148, 57, 185, 1) 32%, rgba(246, 194, 6, 1) 82%);
+    color: white;
+    font-weight: bold;
+}
+
+.container ul li {
+    color: rgb(123, 30, 162);
+}
+

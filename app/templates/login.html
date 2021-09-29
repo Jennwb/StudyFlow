@@ -11,15 +11,24 @@
 {% endfor %}
 {% endif %}
 
-<form action="/login" method="POST">
-    {{ form.csrf_token() }}
-    <label for="usuario" class="form-label">Usuario:</label> 
-    {{ form.usuario(class="form-control", placeholder="Digite seu usuário") }} <br/>
-    <label for="senha" class="form-label">Senha:</label> 
-    {{ form.senha(class="form-control", placeholder="Digite sua senha") }}<br/>
-    {{ form.entrar(class="btn btn-primary")}}<br/>
-</form>
+<main class="form-signin">
+    <form action="/login" method="POST">
+        {{ form.csrf_token() }} 
+      <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal"> StudyFlow </h1>
+      <div class="form-floating">
+        <label for="floatingInput">Usuário</label>
+        {{ form.usuario(class="form-control", placeholder="Digite seu usuário") }}
+      </div>
+      <div class="form-floating">
+        <label for="floatingPassword">Senha</label>
+        {{ form.senha(class="form-control", placeholder="Digite sua senha") }}
+      </div>
+      {{ form.entrar(class="btn btn-primary")}}<br/>
+    </form>
+</main>
 
-<p>Clique aqui para <a href="/formregistrar"> Registrar-se </a></p>
+<p> Clique aqui para <a href="/formregistrar"> Registrar-se </a></p>
 
+<p class="mt-5 mb-3 text-muted">&copy; 2021 StudyFlow, IFRN</p>
 {% endblock %}
