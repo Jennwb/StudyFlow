@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<form action="/registrar" method="POST">
+    Usuario: <input type="text" name="usuario"> <br/>
+    E-mail: <input type="text" name="email"> <br>
+    Senha: <input type="text" name="senha">
+    Confirmar senha: <input type="password" name="confsenha">
+    <button type="submit">Registrar</button>
+</form>
+
+{% endblock %}

@@ -2,12 +2,24 @@
 
 {% block conteudo %}
 
-<form action="/autenticar" method="POST">
-    <label>Usuario: </label>
-    <input type="text" name="usuario"><br/>
-    <label>Senha: </label>
-    <input type="password" name="senha"><br/>
-    <button type="submit">Entrar</button>
+{% set mensagens = get_flashed_messages(with_categories=true) %}
+{% if mensagens %}
+{% for categoria, msg in mensagens %}
+    <div class="alert alert-{{categoria}}" role="alert">
+        {{ msg }}
+    </div>
+{% endfor %}
+{% endif %}
+
+<form action="/login" method="POST">
+    {{ form.csrf_token() }}
+    <label for="usuario" class="form-label">Usuario:</label> 
+    {{ form.usuario(class="form-control", placeholder="Digite seu usuário") }} <br/>
+    <label for="senha" class="form-label">Senha:</label> 
+    {{ form.senha(class="form-control", placeholder="Digite sua senha") }}<br/>
+    {{ form.entrar(class="btn btn-primary")}}<br/>
 </form>
+
+<p>Clique aqui para <a href="/formregistrar"> Registrar-se </a></p>
 
 {% endblock %}
