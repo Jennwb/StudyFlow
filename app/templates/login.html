@@ -1,34 +1,44 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Login </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
 
-{% block conteudo %}
+  {% extends 'base.html' %}
 
-{% set mensagens = get_flashed_messages(with_categories=true) %}
-{% if mensagens %}
-{% for categoria, msg in mensagens %}
-    <div class="alert alert-{{categoria}}" role="alert">
-        {{ msg }}
-    </div>
-{% endfor %}
-{% endif %}
-
-<main class="form-signin">
-    <form action="/login" method="POST">
-        {{ form.csrf_token() }} 
-      <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-      <h1 class="h3 mb-3 fw-normal"> StudyFlow </h1>
-      <div class="form-floating">
-        <label for="floatingInput">Usuário</label>
-        {{ form.usuario(class="form-control", placeholder="Digite seu usuário") }}
+  {% block conteudo %}
+  
+  {% set mensagens = get_flashed_messages(with_categories=true) %}
+  {% if mensagens %}
+  {% for categoria, msg in mensagens %}
+      <div class="alert alert-{{categoria}}" role="alert">
+          {{ msg }}
       </div>
-      <div class="form-floating">
-        <label for="floatingPassword">Senha</label>
-        {{ form.senha(class="form-control", placeholder="Digite sua senha") }}
-      </div>
-      {{ form.entrar(class="btn btn-primary")}}<br/>
-    </form>
-</main>
-
-<p> Clique aqui para <a href="/formregistrar"> Registrar-se </a></p>
-
-<p class="mt-5 mb-3 text-muted">&copy; 2021 StudyFlow, IFRN</p>
-{% endblock %}
+  {% endfor %}
+  {% endif %}
+  
+  <main class="form-signin">
+      <form class="form-login" action="/login" method="POST">
+          {{ form.csrf_token() }} 
+        <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
+        <h2 class="h2 mb-3 fw-normal"> Entre em sua conta! </h2>
+        <div class="form-floating">
+          <label for="floatingInput">Usuário</label>
+          {{ form.usuario(class="form-control") }}
+        </div>
+        <div class="form-floating">
+          <label for="floatingPassword">Senha</label>
+          {{ form.senha(class="form-control") }}
+        </div>
+        {{ form.entrar(class="btn btn-primary")}}<br/>
+        <p> Não possui uma conta? <a href="/formregistrar"> Registre-se! </a></p>
+      </form>
+  </main>
+  {% endblock %}
+</body>
+</html>
