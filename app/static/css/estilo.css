@@ -1,7 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    font-size: 18px;
 }
 
 .container .col-md-3 .btn {
@@ -9,7 +13,6 @@ body {
     color: #fff;
     border: 4px;
     transition: all 0.3s ease;
-    font-weight: bold;
     width: 110px;
     height: 42px;
 }
@@ -48,7 +51,7 @@ body {
 }
 
 .main .container p {
-    font-size: 18px;
+    font-size: 19px;
 }
 
 .main .container h2 .cor {
@@ -60,7 +63,6 @@ body {
     transition: all 0.3s ease;
     border: 5px;
     border-radius: 5px;
-    font-weight: bold;
     width: 200px;
     height: 50px;
     color: #fff;
@@ -69,4 +71,5 @@ body {
 .main .container .botão-saiba-mais:hover {
     background: linear-gradient(94deg, rgb(123, 30, 162) 32%, rgba(246, 194, 6, 1) 82%);
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    font-weight: bold;
 }
