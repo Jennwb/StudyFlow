@@ -47,9 +47,3 @@ def registrar():
 	else:
 		return "As senhas são diferentes!"
 	return "{} - {} - {} - {}".format(usuario, email, senha, confsenha)
-
-@app.route("/teste")
-def teste():
-    u = Usuario("Jennifer", "jenniferbeatrizmn@gmail.com", "123456")
-    db.session.add(u)
-    db.session.commit(u)
