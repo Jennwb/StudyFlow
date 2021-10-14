@@ -13,4 +13,4 @@ class Usuario(Model.db):
         self.senha = senha
     
     def __repr__(self):
-        return "<Ususario {}>".format(self.nome)
+        return "<Usuario {}>".format(self.nome)
