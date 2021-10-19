@@ -22,30 +22,37 @@
     {% endif %}
 
     <main class="form-registrar">
-        <img src="{{ url_for('static', filename='imagens/prova.png') }}" alt="imagem" width="550">
         <form class="form-registro" action="/registrar" method="POST">
         {{ form.csrf_token }}
-        <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
-        <h2 class="h2 mb-3 fw-normal"> Cadastre-se agora! </h2>
-        <div class="form-floating">
+        <h2 class="h2 mb-3 fw-normal"> <b> Cadastre-se aqui! </b> </h2>
+        <div class="form-input">
             <label for="floatingInput"> Usuário </label>
-            {{ form.usuario(class="form-control") }}
+            {{ form.usuario(class="form-control", placeholder="Insira um nome de usuário") }}
         </div>
-        <div class="form-floating">
+        <div class="form-input">
             <label for="floatingEmail"> E-mail </label>
-            {{ form.email(class="form-control") }}
+            {{ form.email(class="form-control", placeholder="Insira o seu e-mail") }}
         </div>
-        <div class="form-floating">
+        <div class="form-input">
             <label for="floatingPassword"> Senha </label>
-            {{ form.senha(class="form-control") }}
+            {{ form.senha(class="form-control", placeholder="Insira uma senha") }}
         </div>
-        <div class="form-floating">
+        <div class="form-input">
             <label for="floatingPassword"> Confirmar Senha </label>
-            {{ form.confirmarsenha(class="form-control") }}
+            {{ form.confirmarsenha(class="form-control", placeholder="Confirme sua senha") }}
         </div>
         {{ form.registrar(class="btn btn-primary") }}
         </form>
+        <img src="{{ url_for('static', filename='imagens/prova.png') }}" alt="imagem" width="500">
     </main>
+
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <span class="text-muted">&copy; 2021 StudyFlow, IFRN </span>
+          </div>
+        </footer>
+    </div>
 
     {% endblock %}
     

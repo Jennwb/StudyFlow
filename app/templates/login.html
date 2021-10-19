@@ -23,23 +23,32 @@
   {% endif %}
   
   <main class="form-signin">
-      <img src="{{ url_for('static', filename='imagens/estudo.png') }}" alt="imagem" width="750">
+      <img src="{{ url_for('static', filename='imagens/estudo.png') }}" alt="imagem" width="650">
       <form class="form-login" action="/login" method="POST">
           {{ form.csrf_token() }} 
-        <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
-        <h2 class="h2 mb-3 fw-normal"> Entre em sua conta! </h2>
-        <div class="form-floating">
+        <h2 class="h2 mb-3 fw-normal"> <b>Log In</b> </h2>
+        <div class="form-input">
           <label for="floatingInput">Usuário</label>
-          {{ form.usuario(class="form-control") }}
+          {{ form.usuario(class="form-control", placeholder="Insira o seu usuário") }}
         </div>
-        <div class="form-floating">
+        <div class="form-input">
           <label for="floatingPassword">Senha</label>
-          {{ form.senha(class="form-control") }}
+          {{ form.senha(class="form-control", placeholder="Insira a sua senha") }}
         </div>
         {{ form.entrar(class="btn btn-primary")}}<br/>
-        <p> Não possui uma conta? <a href="/registrar"> Cadastre-se! </a></p>
+        <p> Não possui uma conta? <a href="/registrar"> Cadastre-se! </a> </p>
       </form>
+      
   </main>
+
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">&copy; 2021 StudyFlow, IFRN </span>
+      </div>
+    </footer>
+  </div>
+
   {% endblock %}
 </body>
 </html>
