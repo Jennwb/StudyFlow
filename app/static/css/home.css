@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.main-container .d-flex.flex-column.flex-shrink-0.p-3.bg-light {
+    height: 100vh;
+}

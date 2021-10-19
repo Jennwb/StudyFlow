@@ -49,4 +49,4 @@ def registrar():
 
 @app.route('/home')
 def home():
-	render_template('home.html')
+	return render_template('home.html', title='StudyFlow')
