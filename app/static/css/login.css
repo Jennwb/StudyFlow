@@ -1,9 +1,9 @@
-.form-signin {
+.form-signin, .form-registrar {
     display: flex;
     justify-content: center;
 }
 
-.form-signin .form-login {
+.form-signin .form-login, .form-registrar .form-registro {
     display: grid;
     justify-items: center;
 }
@@ -12,7 +12,7 @@
     margin: 8px;
 }
 
-input#entrar.btn.btn-primary {
+input#entrar.btn.btn-primary, input#registrar.btn.btn-primary {
     border: 4px;
     transition: all 0.3s ease;
     background: rgb(123, 30, 162);
@@ -23,7 +23,7 @@ input#entrar.btn.btn-primary {
     margin-top: 15px;
 }
 
-input#entrar.btn.btn-primary:hover {
+input#entrar.btn.btn-primary:hover, input#registrar.btn.btn-primary:hover {
     background: linear-gradient(94deg, rgb(123, 30, 162) 32%, rgba(246, 194, 6, 1) 82%);
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     font-weight: bold;

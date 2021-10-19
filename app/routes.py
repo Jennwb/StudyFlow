@@ -2,7 +2,9 @@ from app import app
 from flask import render_template
 from flask import request
 from flask import flash, redirect
-from app.forms import LoginForm
+from app.forms import LoginForm, RegistrarForm
+from app.models.usuario import Usuario
+from app import db
 
 @app.route('/')
 @app.route('/index')
@@ -31,19 +33,23 @@ def login():
 			return "{} - {}".format(form.usuario.data, form.senha.data)
 	return render_template('login.html', form=form)
 
-@app.route('/formregistrar')
-def formregistrar():
-	return render_template('registrar.html')
-
-@app.route('/registrar', methods=['POST'])
+@app.route('/registrar', methods=['GET','POST'])
 def registrar():
-	usuario = request.form.get("usuario")
-	email = request.form.get("email")
-	senha = request.form.get("senha")
-	confsenha = request.form.get("confsenha")
+    form = RegistrarForm()
+    if form.validate_on_submit():
+        flash("Usuário registrado com sucesso!", "success")
+        return (redirect("/registrar"))
+    elif len(form.errors.items()) > 0:
+        for campo, mensagens in form.errors.items():
+            for m in mensagens:
+                flash(m, "danger")
+        return (redirect("/registrar"))
 
-	if senha == confsenha:
-		return "As senhas são iguais!"
-	else:
-		return "As senhas são diferentes!"
-	return "{} - {} - {} - {}".format(usuario, email, senha, confsenha)
+    return render_template("registrar.html", form=form)
+
+@app.route('/testebd')
+def testebd():
+    u = Usuario("Beatriz", "jennifer.b@escolar.ifrn.edu.br", '123456')
+    db.session.add(u)
+    db.session.commit()
+    return "Usuário registrado com sucesso!"

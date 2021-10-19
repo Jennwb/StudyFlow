@@ -1,13 +1,43 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    
+</body>
+</html>
 
+{% extends 'base.html' %}
 {% block conteudo %}
 
-<form action="/registrar" method="POST">
-    Usuario: <input type="text" name="usuario"> <br/>
-    E-mail: <input type="text" name="email"> <br>
-    Senha: <input type="text" name="senha">
-    Confirmar senha: <input type="password" name="confsenha">
-    <button type="submit">Registrar</button>
-</form>
+<main class="form-registrar">
+    <form class="form-registro" action="/registrar" method="POST">
+    {{ form.csrf_token }}
+    <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
+    <h2 class="h2 mb-3 fw-normal"> Cadastre-se agora! </h2>
+    <div class="form-floating">
+        <label for="floatingInput"> Usuário </label>
+        {{ form.usuario(class="form-control") }}
+    </div>
+    <div class="form-floating">
+        <label for="floatingEmail"> E-mail </label>
+        {{ form.email(class="form-control") }}
+    </div>
+    <div class="form-floating">
+        <label for="floatingPassword"> Senha </label>
+        {{ form.senha(class="form-control") }}
+    </div>
+    <div class="form-floating">
+        <label for="floatingPassword"> Confirmar Senha </label>
+        {{ form.confirmarsenha(class="form-control") }}
+    </div>
+    {{ form.registrar(class="btn btn-primary") }}
+    </form>
+</main>
 
 {% endblock %}
