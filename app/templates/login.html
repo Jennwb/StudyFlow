@@ -23,6 +23,7 @@
   {% endif %}
   
   <main class="form-signin">
+      <img src="{{ url_for('static', filename='imagens/estudo.png') }}" alt="imagem" width="750">
       <form class="form-login" action="/login" method="POST">
           {{ form.csrf_token() }} 
         <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">

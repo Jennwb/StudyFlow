@@ -46,3 +46,7 @@ def registrar():
         return (redirect("/registrar"))
 
     return render_template("registrar.html", form=form)
+
+@app.route('/home')
+def home():
+	render_template('home.html')

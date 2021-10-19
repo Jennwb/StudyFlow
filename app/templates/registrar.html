@@ -4,40 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar</title>
+    <title> Cadastrar </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
+
+    {% extends 'base.html' %}
+    {% block conteudo %}
+
+    {% set mensagens = get_flashed_messages(with_categories=true) %}
+    {% if mensagens %}
+    {% for categoria, msg in mensagens %}
+        <div class="alert alert-{{categoria}}" role="alert">
+            {{ msg }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <main class="form-registrar">
+        <img src="{{ url_for('static', filename='imagens/prova.png') }}" alt="imagem" width="550">
+        <form class="form-registro" action="/registrar" method="POST">
+        {{ form.csrf_token }}
+        <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
+        <h2 class="h2 mb-3 fw-normal"> Cadastre-se agora! </h2>
+        <div class="form-floating">
+            <label for="floatingInput"> Usuário </label>
+            {{ form.usuario(class="form-control") }}
+        </div>
+        <div class="form-floating">
+            <label for="floatingEmail"> E-mail </label>
+            {{ form.email(class="form-control") }}
+        </div>
+        <div class="form-floating">
+            <label for="floatingPassword"> Senha </label>
+            {{ form.senha(class="form-control") }}
+        </div>
+        <div class="form-floating">
+            <label for="floatingPassword"> Confirmar Senha </label>
+            {{ form.confirmarsenha(class="form-control") }}
+        </div>
+        {{ form.registrar(class="btn btn-primary") }}
+        </form>
+    </main>
+
+    {% endblock %}
     
 </body>
 </html>
-
-{% extends 'base.html' %}
-{% block conteudo %}
-
-<main class="form-registrar">
-    <form class="form-registro" action="/registrar" method="POST">
-    {{ form.csrf_token }}
-    <img src="{{ url_for('static', filename='imagens/Logo.png') }}" alt="logo" width="150">
-    <h2 class="h2 mb-3 fw-normal"> Cadastre-se agora! </h2>
-    <div class="form-floating">
-        <label for="floatingInput"> Usuário </label>
-        {{ form.usuario(class="form-control") }}
-    </div>
-    <div class="form-floating">
-        <label for="floatingEmail"> E-mail </label>
-        {{ form.email(class="form-control") }}
-    </div>
-    <div class="form-floating">
-        <label for="floatingPassword"> Senha </label>
-        {{ form.senha(class="form-control") }}
-    </div>
-    <div class="form-floating">
-        <label for="floatingPassword"> Confirmar Senha </label>
-        {{ form.confirmarsenha(class="form-control") }}
-    </div>
-    {{ form.registrar(class="btn btn-primary") }}
-    </form>
-</main>
-
-{% endblock %}

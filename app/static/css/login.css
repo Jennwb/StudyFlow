@@ -1,6 +1,6 @@
 .form-signin, .form-registrar {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .form-signin .form-login, .form-registrar .form-registro {
