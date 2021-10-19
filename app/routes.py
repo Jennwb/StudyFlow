@@ -46,10 +46,3 @@ def registrar():
         return (redirect("/registrar"))
 
     return render_template("registrar.html", form=form)
-
-@app.route('/testebd')
-def testebd():
-    u = Usuario("Beatriz", "jennifer.b@escolar.ifrn.edu.br", '123456')
-    db.session.add(u)
-    db.session.commit()
-    return "Usuário registrado com sucesso!"
