@@ -13,4 +13,4 @@ class RegistrarForm(FlaskForm):
     email = EmailField("email", validators=[InputRequired(), Email()])
     senha = PasswordField("senha", validators=[InputRequired(), EqualTo("confirmarsenha", message="As senhas não conferem.")])
     confirmarsenha = PasswordField("confirmarsenha", validators=[InputRequired()])
-    registrar = SubmitField("Registrar")
+    registrar = SubmitField("Cadastrar")
