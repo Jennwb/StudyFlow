@@ -20,31 +20,31 @@ def login():
 
 		#Tentativa de fazer o login funcionar, não me batam
 
-	# 	if User.query.filter_by(nomeUsuário=usuario).first():
-	# 		if User.query.filter_by(senha=senha).first():
+	if User.query.filter_by(nomeUsuário=usuario).first():
+		if User.query.filter_by(senha=senha).first():
+			flash('A senha está correta. ', "warning")
+		else: 
+			flash('A senha está incorreta. ', "danger")
+		return redirect("/login")
+	else: 
+		flash('O login está incorreto. ', "danger")
+		return "{} - {}".format(form.usuario.data, form.senha.data)
+	return render_template('login.html', form=form)
+
+	# 	if usuario != 'admin' or senha != 'admin':
+	# 		if (usuario == 'admin'):
+	# 			flash('O login está correto.', "warning")
+	# 		else:
+	# 			flash('O login está incorreto. ', "danger")
+			
+	# 		if (senha == 'admin'):
 	# 			flash('A senha está correta. ', "warning")
-	# 		else: 
+	# 		else:
 	# 			flash('A senha está incorreta. ', "danger")
 	# 		return redirect("/login")
-	# 	else: 
-	# 		flash('O login está incorreto. ', "danger")
+	# 	else:
 	# 		return "{} - {}".format(form.usuario.data, form.senha.data)
 	# return render_template('login.html', form=form)
-
-		if usuario != 'admin' or senha != 'admin':
-			if (usuario == 'admin'):
-				flash('O login está correto.', "warning")
-			else:
-				flash('O login está incorreto. ', "danger")
-			
-			if (senha == 'admin'):
-				flash('A senha está correta. ', "warning")
-			else:
-				flash('A senha está incorreta. ', "danger")
-			return redirect("/login")
-		else:
-			return "{} - {}".format(form.usuario.data, form.senha.data)
-	return render_template('login.html', form=form)
 
 @app.route('/registrar', methods=['GET','POST'])
 def registrar():
