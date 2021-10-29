@@ -18,6 +18,19 @@ def login():
 		usuario = form.usuario.data
 		senha = form.senha.data
 
+		#Tentativa de fazer o login funcionar, não me batam
+
+	# 	if User.query.filter_by(nomeUsuário=usuario).first():
+	# 		if User.query.filter_by(senha=senha).first():
+	# 			flash('A senha está correta. ', "warning")
+	# 		else: 
+	# 			flash('A senha está incorreta. ', "danger")
+	# 		return redirect("/login")
+	# 	else: 
+	# 		flash('O login está incorreto. ', "danger")
+	# 		return "{} - {}".format(form.usuario.data, form.senha.data)
+	# return render_template('login.html', form=form)
+
 		if usuario != 'admin' or senha != 'admin':
 			if (usuario == 'admin'):
 				flash('O login está correto.', "warning")
