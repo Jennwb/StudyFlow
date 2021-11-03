@@ -6,6 +6,7 @@ from app.forms import LoginForm, RegistrarForm
 from app.models.usuario import Usuario
 from app import db
 import bcrypt
+from app import conexao
 
 @app.route('/')
 @app.route('/index')
@@ -42,7 +43,7 @@ def login():
 						return "{} - {}".format(form.usuario.data, senha_hashed)
 						# return (redirect("/home"))
 					else:
-						flash('Essa conta está inativa', 'warning')
+						flash('Essa conta está inativa.', 'warning')
 				else: 
 					flash('A senha está incorreta. ', "danger")
 					return redirect("/login")
@@ -52,17 +53,33 @@ def login():
 
 @app.route('/registrar', methods=['GET','POST'])
 def registrar():
-    form = RegistrarForm()
-    if form.validate_on_submit():
-        flash("Usuário registrado com sucesso!", "success")
-        return (redirect("/registrar"))
-    elif len(form.errors.items()) > 0:
-        for campo, mensagens in form.errors.items():
-            for m in mensagens:
-                flash(m, "danger")
-        return (redirect("/registrar"))
+	form = RegistrarForm()
+	if form.validate_on_submit():
+		
+		# Adicionando ao banco de dados
+		salt = bcrypt.gensalt(8)
+		senha_hashed = bcrypt.hashpw(form.senha.data.encode('utf8'), salt)
 
-    return render_template("registrar.html", form=form)
+		# Executa o comando:
+		me = Usuario(form.usuario.data, form.email.data, senha_hashed, salt, 1)
+
+		# Efetua um commit no banco de dados.
+		# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+		# suas alterações.
+		db.session.add(me)
+
+		# Aqui pode pedir uma confirmação 
+		db.session.commit()
+
+		flash("Usuário registrado com sucesso!", "success")
+		return (redirect("/login"))
+	elif len(form.errors.items()) > 0:
+		for campo, mensagens in form.errors.items():
+ 			for m in mensagens:
+ 				flash(m, "danger")
+		return (redirect("/registrar"))
+
+	return render_template("registrar.html", form=form)
 
 @app.route('/logout')
 def logout():
