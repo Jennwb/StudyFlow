@@ -19,18 +19,3 @@ class Usuario(db.Model):
         
     def __repr__(self):
         return "<Usuario: {}>".format(self.nome)
-
-    def __add__():
-        # Cria um cursor:
-        cursor = conexao.cursor()
-
-        # Executa o comando:
-        cursor.execute("INSERT INTO Usuário (id_usuario, nomeUsuario, email, senha, ativo) VALUES ('', '', '', '', 1)")
-
-        # Efetua um commit no banco de dados.
-        # Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
-        # suas alterações.
-        conexao.commit()
-
-        # Finaliza a conexão
-        conexao.close()
