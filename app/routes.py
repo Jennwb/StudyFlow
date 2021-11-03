@@ -5,6 +5,8 @@ from flask import flash, redirect
 from app.forms import LoginForm, RegistrarForm
 from app.models.usuario import Usuario
 from app import db
+import bcrypt
+import hashlib
 
 @app.route('/')
 @app.route('/index')
@@ -19,6 +21,13 @@ def login():
 		senha = form.senha.data
 		ativo = 1
 
+		#Aqui jaz as tentativas falhas de criptografar senhas
+		# salt = bcrypt.gensalt(8)
+		# senha1 = bcrypt.hashpw(form.senha.data, salt)
+		# senha1.update(line.encode(wordlistfile.encoding))
+		# print (senha1)
+		# exit() 
+
 	#Tentativa de fazer o login funcionar, não me batam
 		if usuario == 'admin' and senha == 'admin':
 			return "{} - {}".format(form.usuario.data, form.senha.data)
@@ -30,6 +39,7 @@ def login():
 				if (senha == senha_db):
 					if (ativo_db == ativo):
 						return "{} - {}".format(form.usuario.data, form.senha.data)
+						# return (redirect("/home"))
 					else:
 						flash('Essa conta está inativa', 'warning')
 				else: 
