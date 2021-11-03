@@ -17,33 +17,26 @@ def login():
 	if form.validate_on_submit():
 		usuario = form.usuario.data
 		senha = form.senha.data
+		ativo = 1
 
-		#Tentativa de fazer o login funcionar, não me batam
-
-	# 	if User.query.filter_by(nomeUsuário=usuario).first():
-	# 		if User.query.filter_by(senha=senha).first():
-	# 			flash('A senha está correta. ', "warning")
-	# 		else: 
-	# 			flash('A senha está incorreta. ', "danger")
-	# 		return redirect("/login")
-	# 	else: 
-	# 		flash('O login está incorreto. ', "danger")
-	# 		return "{} - {}".format(form.usuario.data, form.senha.data)
-	# return render_template('login.html', form=form)
-
-		if usuario != 'admin' or senha != 'admin':
-			if (usuario == 'admin'):
-				flash('O login está correto.', "warning")
-			else:
-				flash('O login está incorreto. ', "danger")
-			
-			if (senha == 'admin'):
-				flash('A senha está correta. ', "warning")
-			else:
-				flash('A senha está incorreta. ', "danger")
-			return redirect("/login")
-		else:
+	#Tentativa de fazer o login funcionar, não me batam
+		if usuario == 'admin' and senha == 'admin':
 			return "{} - {}".format(form.usuario.data, form.senha.data)
+		else:
+			usuario_db = Usuario.query.filter_by(nomeUsuario=usuario).first()
+			if (usuario_db):
+				senha_db = usuario_db.senha
+				ativo_db = usuario_db.ativo
+				if (senha == senha_db):
+					if (ativo_db == ativo):
+						return "{} - {}".format(form.usuario.data, form.senha.data)
+					else:
+						flash('Essa conta está inativa', 'warning')
+				else: 
+					flash('A senha está incorreta. ', "danger")
+					return redirect("/login")
+			else: 
+				flash('O nome de usuário não existe. ', "danger")
 	return render_template('login.html', form=form)
 
 @app.route('/registrar', methods=['GET','POST'])
@@ -59,6 +52,10 @@ def registrar():
         return (redirect("/registrar"))
 
     return render_template("registrar.html", form=form)
+
+@app.route('/logout')
+def logout():
+    return 'Logout'
 
 @app.route('/home')
 def home():

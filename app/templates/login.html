@@ -24,17 +24,21 @@
   
   <main class="form-signin">
       <img src="{{ url_for('static', filename='imagens/estudo.png') }}" alt="imagem" width="650">
+
       <form class="form-login" action="/login" method="POST">
           {{ form.csrf_token() }} 
         <h2 class="h2 mb-3 fw-normal"> <b>Log In</b> </h2>
+
         <div class="form-input">
           <label for="floatingInput">Usuário</label>
           {{ form.usuario(class="form-control", placeholder="Insira o seu usuário") }}
         </div>
+        
         <div class="form-input">
           <label for="floatingPassword">Senha</label>
           {{ form.senha(class="form-control", placeholder="Insira a sua senha") }}
         </div>
+
         {{ form.entrar(class="btn btn-primary")}}<br/>
         <p> Não possui uma conta? <a href="/registrar"> Cadastre-se! </a> </p>
       </form>

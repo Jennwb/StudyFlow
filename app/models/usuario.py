@@ -2,10 +2,11 @@ from app import db
 
 class Usuario(db.Model):
     __tablename__="Usuário"
-    id = db.Column(db.Integer, primary_key=True)
+    id_usuario = db.Column(db.Integer, primary_key=True)
     nomeUsuario = db.Column(db.String(100))
     email = db.Column(db.String(100))
     senha = db.Column(db.String(100))
+    ativo = db.Column(db.String(100))
 
     def __init__(self, nome, email, senha):
         self.nomeUsuario = nome
