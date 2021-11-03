@@ -6,7 +6,6 @@ from app.forms import LoginForm, RegistrarForm
 from app.models.usuario import Usuario
 from app import db
 import bcrypt
-import hashlib
 
 @app.route('/')
 @app.route('/index')
