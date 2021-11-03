@@ -23,7 +23,7 @@ def login():
 		salt = bcrypt.gensalt(8)
 		senha_hashed = bcrypt.hashpw(form.senha.data.encode('utf8'), salt)
 
-	#Tentativa de fazer o login funcionar, não me batam
+	# Autenticação
 		if usuario == 'admin' and senha == 'admin':
 			return "{} - {}".format(form.usuario.data, form.senha.data)
 		else:
@@ -32,13 +32,13 @@ def login():
 				senha_db = usuario_db.senha
 				ativo_db = usuario_db.ativo
 
-				#Senha criptografada:
+				# Autenticação - Senha criptografada:
 				# if (senha == senha_hashed):
 
-				#Senha não criptografada:
+				# Autenticação - Senha não criptografada:
 				if (senha == senha_db):
 
-					#Continuação:
+					# Continuação:
 					if (ativo_db == ativo):
 						return "{} - {}".format(form.usuario.data, senha_hashed)
 						# return (redirect("/home"))
