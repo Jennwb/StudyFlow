@@ -18,10 +18,8 @@ def login():
 	form = LoginForm()
 	if form.validate_on_submit():
 		usuario = form.usuario.data
-		senha = form.senha.data
+		senha = form.senha.data.encode('utf8')
 		ativo = 1
-		salt = bcrypt.gensalt(8)
-		senha_hashed = bcrypt.hashpw(form.senha.data.encode('utf8'), salt)
 
 	# Autenticação
 		if usuario == 'admin' and senha == 'admin':
@@ -29,19 +27,13 @@ def login():
 		else:
 			usuario_db = Usuario.query.filter_by(nomeUsuario=usuario).first()
 			if (usuario_db):
-				senha_db = usuario_db.senha
 				ativo_db = usuario_db.ativo
+				senha_db = usuario_db.senha
 
-				# Autenticação - Senha criptografada:
-				# if (senha == senha_hashed):
-
-				# Autenticação - Senha não criptografada:
-				if (senha == senha_db):
-
-					# Continuação:
+				auth = bcrypt.checkpw(senha, senha_db)
+				if (auth):
 					if (ativo_db == ativo):
-						return "{} - {}".format(form.usuario.data, senha_hashed)
-						# return (redirect("/home"))
+						return (redirect("/home"))
 					else:
 						flash('Essa conta está inativa.', 'warning')
 				else: 
@@ -49,16 +41,17 @@ def login():
 					return redirect("/login")
 			else: 
 				flash('O nome de usuário não existe. ', "danger")
+				return redirect("/login")
 	return render_template('login.html', form=form)
 
 @app.route('/registrar', methods=['GET','POST'])
 def registrar():
 	form = RegistrarForm()
 	if form.validate_on_submit():
-		
 		# Adicionando ao banco de dados
 		salt = bcrypt.gensalt(8)
-		senha_hashed = bcrypt.hashpw(form.senha.data.encode('utf8'), salt)
+		senha_encoded = form.senha.data.encode('utf8')
+		senha_hashed = bcrypt.hashpw(senha_encoded, salt)
 
 		# Executa o comando:
 		me = Usuario(form.usuario.data, form.email.data, senha_hashed, salt, 1)
