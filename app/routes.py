@@ -2,7 +2,7 @@ from app import app
 from flask import render_template
 from flask import request
 from flask import flash, redirect
-from app.forms import LoginForm, RegistrarForm
+from app.forms import LoginForm, RegistrarForm, AdicionarMaterias
 from app.models.usuario import Usuario
 from app import db
 import bcrypt
@@ -81,3 +81,36 @@ def logout():
 @app.route('/home')
 def home():
 	return render_template('home.html', title='StudyFlow')
+
+@app.route('/materias')
+def materias():
+	return render_template('materias/listar_materia.html', title='Matérias')
+
+@app.route('/materias/adicionar', methods=['GET','POST'])
+def adicionar():
+	form = AdicionarMaterias()
+	if form.validate_on_submit():
+		nome = form.nome.data
+		nivel_afinidade = form.nivel_afinidade
+		peso_prova = form.peso_prova
+
+		materia = Usuario(id_usuario, nome, nivel_afinidade, peso_prova)
+
+		# Efetua um commit no banco de dados.
+		# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+		# suas alterações.
+		db.session.add(materia)
+
+		# Aqui pode pedir uma confirmação 
+		db.session.commit()
+
+		flash("Matéria registrada com sucesso!", "success")
+		return (redirect("/materias"))
+
+	elif len(form.errors.items()) > 0:
+		for campo, mensagens in form.errors.items():
+		 	for m in mensagens:
+ 				flash(m, "danger")
+		return (redirect("/materias/nova_materia.html"))
+
+	return render_template('materias/nova_materia.html', form=form)

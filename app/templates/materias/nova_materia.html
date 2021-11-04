@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Nova Matéria </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+
+  {% extends 'base.html' %}
+
+  {% block conteudo %}
+  
+  {% set mensagens = get_flashed_messages(with_categories=true) %}
+  {% if mensagens %}
+  {% for categoria, msg in mensagens %}
+      <div class="alert alert-{{categoria}}" role="alert">
+          {{ msg }}
+      </div>
+  {% endfor %}
+  {% endif %}
+
+  <main class="form-nova_materia">
+
+    <form class="form-nova_materia" action="/materias/adicionar" method="POST">
+        {{ form.csrf_token() }} 
+      <h2 class="h2 mb-3 fw-normal"> <b>Adicione uma matéria</b> </h2>
+
+      <div class="form-input">
+        <label for="floatingInput">Nome da Matéria:</label>
+        {{ form.nome(class="form-control", placeholder="Insira o nome da matéria") }}
+      </div>
+      
+      <div class="form-input">
+        <label for="floatingPassword">Nível de Afinidade: </label>
+        {{ form.nivel_afinidade(class="form-control", placeholder="Selecione sua afinidade com a matéria:") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingPassword">Peso na prova:</label>
+        {{ form.peso_prova(class="form-control", placeholder="Selecione o peso da matéria na prova:") }}
+      </div>
+
+      {{ form.adicionar(class="btn btn-primary")}}<br/>
+    </form>
+    
+</main>
+
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <span class="text-muted">&copy; 2021 StudyFlow, IFRN </span>
+    </div>
+  </footer>
+</div>
+
+{% endblock %}
+</body>
+</html>

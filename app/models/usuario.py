@@ -9,10 +9,10 @@ class Usuario(db.Model):
     # salt = db.Column(db.LargeBinary(8), nullable=False)
     ativo = db.Column(db.Integer(), nullable=False)
 
-    def __init__(self, nome, email, senha_hashed, salt, ativo):
+    def __init__(self, nome, email, senha, salt, ativo):
         self.nomeUsuario = nome
         self.email = email
-        self.senha = senha_hashed
+        self.senha = senha
         self.salt = salt
         self.ativo = ativo
         
