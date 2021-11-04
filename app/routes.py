@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template
-from flask import request
+from flask import request, session
 from flask import flash, redirect
 from app.forms import LoginForm, RegistrarForm, AdicionarMaterias
 from app.models.usuario import Usuario
@@ -33,6 +33,7 @@ def login():
 				auth = bcrypt.checkpw(senha, senha_db)
 				if (auth):
 					if (ativo_db == ativo):
+						session['usuario_logado'] = form.usuario.data
 						return (redirect("/home"))
 					else:
 						flash('Essa conta está inativa.', 'warning')
@@ -76,41 +77,56 @@ def registrar():
 
 @app.route('/logout')
 def logout():
-    return 'Logout'
+    session['usuario_logado'] = None
+    flash(" Acabou de deslogar")
+    return redirect('/')
 
 @app.route('/home')
 def home():
-	return render_template('home.html', title='StudyFlow')
+	# if (session['usuario_logado'] != None):        
+		return render_template('home.html', title='StudyFlow')
+	# else:
+	# 	return redirect('/')
+	
 
 @app.route('/materias')
 def materias():
-	return render_template('materias/listar_materia.html', title='Matérias')
+	# if (session['usuario_logado'] != None):        
+		return render_template('materias/listar_materia.html', title='Matérias')
+	# else:
+	# 	return redirect('/')
 
 @app.route('/materias/adicionar', methods=['GET','POST'])
 def adicionar():
-	form = AdicionarMaterias()
-	if form.validate_on_submit():
-		nome = form.nome.data
-		nivel_afinidade = form.nivel_afinidade
-		peso_prova = form.peso_prova
+	# if (session['usuario_logado'] != None):        
+		form = AdicionarMaterias()
+		if form.validate_on_submit():
+			nome = form.nome.data
+			nivel_afinidade = form.nivel_afinidade
+			peso_prova = form.peso_prova
 
-		materia = Usuario(id_usuario, nome, nivel_afinidade, peso_prova)
+			# Consertar 
+			id_usuario = '0'
 
-		# Efetua um commit no banco de dados.
-		# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
-		# suas alterações.
-		db.session.add(materia)
+			materia = Usuario(id_usuario, nome, nivel_afinidade, peso_prova)
 
-		# Aqui pode pedir uma confirmação 
-		db.session.commit()
+			# Efetua um commit no banco de dados.
+			# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+			# suas alterações.
+			db.session.add(materia)
 
-		flash("Matéria registrada com sucesso!", "success")
-		return (redirect("/materias"))
+			# Aqui pode pedir uma confirmação 
+			db.session.commit()
 
-	elif len(form.errors.items()) > 0:
-		for campo, mensagens in form.errors.items():
-		 	for m in mensagens:
- 				flash(m, "danger")
-		return (redirect("/materias/nova_materia.html"))
+			flash("Matéria registrada com sucesso!", "success")
+			return (redirect("/materias"))
 
-	return render_template('materias/nova_materia.html', form=form)
+		elif len(form.errors.items()) > 0:
+			for campo, mensagens in form.errors.items():
+			 	for m in mensagens:
+ 					flash(m, "danger")
+			return (redirect("/materias/nova_materia.html"))
+
+		return render_template('materias/nova_materia.html', form=form)
+	# else:
+	# 	return redirect('/')
