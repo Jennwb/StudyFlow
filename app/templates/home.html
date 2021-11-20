@@ -1,4 +1,70 @@
-{% extends "sidebar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {{ title }} </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
 
-{% block conteudo %}
-{% endblock %}
+<body>
+
+    <div class="navigation">
+        <div class="home-title">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="" width="50px">
+                <span><a href=""> StudyFlow </a></span>
+            </div>
+        </div>
+        <ul>
+            <li class="list active">
+                <a href="/home">
+                    <span class="icon"> <ion-icon name="school-outline"></ion-icon> </span>
+                    <span class="title"> Meu Flow </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="/materias">
+                    <span class="icon"> <ion-icon name="book-outline"></ion-icon> </span>
+                    <span class="title"> Matérias </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"> <ion-icon name="document-outline"></ion-icon> </span>
+                    <span class="title"> Lembretes </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"> <ion-icon name="time-outline"></ion-icon> </span>
+                    <span class="title"> Horários </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"> <ion-icon name="person-outline"></ion-icon> </span>
+                    <span class="title"> Perfil </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"> <ion-icon name="log-out-outline"></ion-icon> </span>
+                    <span class="title"> Sair </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="content">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur ab expedita deserunt aliquid, dolores voluptates voluptatum cum aliquam debitis necessitatibus nisi consequatur ipsum odit aut nostrum iste asperiores fugit ut.</p>
+        </div>
+    </div>
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
