@@ -21,7 +21,7 @@ body {
    border-radius: 10px;
    border-left: 5px solid rgba(246, 194, 6, 1);
    box-sizing: initial;
-   background-color: rgb(123, 30, 162); 
+   background-color: #9C36B5; 
    transition: width 0.5s ease;
 }
 
@@ -123,7 +123,7 @@ body {
 .main-content .btn {
     border: 4px;
     transition: all 0.3s ease;
-    background: rgb(123, 30, 162);
+    background: #9C36B5;
     color: #fff;
     border-radius: 5px;
     width: 150px;
@@ -133,7 +133,7 @@ body {
 }
 
 .main-content .btn:hover {
-    background: linear-gradient(94deg, rgb(123, 30, 162) 32%, rgba(246, 194, 6, 1) 82%);
+    background: linear-gradient(90deg, rgba(156,54,181,1) 40%, rgba(255,212,59,1) 80%);
     font-weight: bold;
 }
 
