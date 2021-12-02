@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 body {
     min-height: 100vh;
-    background: #fff;   
+    background: #FAFAFC;   
 }
 
 .navigation {
@@ -23,6 +23,7 @@ body {
    box-sizing: initial;
    background-color: #9C36B5; 
    transition: width 0.5s ease;
+   font-weight: bold;
 }
 
 .home-title {
@@ -46,7 +47,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    padding-left: 6px;
+    padding-left: 15px;
     padding-top: 120px;
     width: 100%;
 }
@@ -65,7 +66,6 @@ body {
 
 .navigation ul li a {
     position: relative;
-    display: block;
     width: 100%;
     display: flex;
     text-decoration: none;
@@ -73,13 +73,13 @@ body {
 }
 
 .navigation ul li.active a {
-    color: #333;
+    color: #3A3A3C;
 }
 
 .navigation ul li a .icon {
     position: relative;
     display: block;
-    min-width: 60px;
+    min-width: 45px;
     height: 60px;
     line-height: 70px;
     text-align: center;
@@ -100,43 +100,148 @@ body {
 
 .main-content {
     position: fixed;
-    top: 20px;
+    top: 60px;
     left: 400px;
     bottom: 20px;
-    width: 660px;
+    width: 544px;
     background-color: #fff;
     height: 600px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    border-radius: 15px;
+    border-radius: 40px;
     padding: 20px 20px;
+    border: 1px solid rgba(156, 54, 181, 22%);
 }
 
 .main-content:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-.main-content p {
-    color: #333;
+.main-content-title {
+    position: relative;
+    left: 15px;
+    top: 10px;
+    color: #9C36B5;
 }
 
-.main-content .btn {
-    border: 4px;
-    transition: all 0.3s ease;
-    background: #9C36B5;
-    color: #fff;
-    border-radius: 5px;
-    width: 150px;
-    height: 40px;
-    margin-top: 15px;
+.main-content-title h2 {
+    padding-bottom: 12px;
+}
+
+.main-content-title p {
+    color: #A1AEB7;
+    font-size: 14px;
+}
+
+.horas-estudadas {
+    position: fixed;
+    top: 60px;
+    left: 1050px;
+    bottom: 20px;
+    width: 364px;
+    background-color: #fff;
+    height: 600px;
+    transition: 0.3s;
+    border-radius: 40px;
+    padding: 20px 20px;
+    border: 1px solid rgba(156, 54, 181, 22%);
+}
+
+.horas-estudadas-title {
+    position: relative;
+    left: 15px;
+    top: 10px;
+    color: #9C36B5;
+}
+
+.horas-estudadas .btn-edit {
+    background-color: #fff;
+    border: 1px solid #9C36B5;
+    color: #9C36B5;
+    border-radius: 10px;
+    transition: 0.3s;
     text-decoration: none;
+    padding: 10px 45px;
+    position: relative;
+    top: 480px;
+    left: 15px;
+    font-weight: bold;
 }
 
-.main-content .btn:hover {
+.horas-estudadas .btn-edit:hover {
     background: linear-gradient(90deg, rgba(156,54,181,1) 40%, rgba(255,212,59,1) 80%);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    color: #fff;
     font-weight: bold;
+    border: #fff;
+}
+
+.main-content-materias {
+    position: fixed;
+    top: 60px;
+    left: 400px;
+    bottom: 20px;
+    width: 800px;
+    background-color: #fff;
+    height: 600px;
+    transition: 0.3s;
+    border-radius: 40px;
+    padding: 20px 20px;
+    border: 1px solid rgba(156, 54, 181, 22%);
+}
+
+.main-content-materias .btn-add {
+    background-color: #fff;
+    border: 1px solid #9C36B5;
+    color: #9C36B5;
+    transition: 0.3s;
+    border-radius: 10px;
+    text-decoration: none;
+    padding: 10px 45px;
+    position: relative;
+    bottom: 45px;
+    left: 15px;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.main-content-materias .btn-add:hover {
+    background: linear-gradient(90deg, rgba(156,54,181,1) 40%, rgba(255,212,59,1) 80%);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    color: #fff;
+    font-weight: bold;
+    border: #fff;
+}
+
+.main-content-materias .btn-edit {
+    background-color: #fff;
+    border: 1px solid #9C36B5;
+    color: #9C36B5;
+    transition: 0.3s;
+    border-radius: 10px;
+    text-decoration: none;
+    padding: 10px 45px;
+    position: relative;
+    bottom: 45px;
+    left: 15px;
+    font-weight: bold;
+}
+
+.main-content-materias .btn-edit:hover {
+    background: linear-gradient(90deg, rgba(156,54,181,1) 40%, rgba(255,212,59,1) 80%);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    color: #fff;
+    font-weight: bold;
+    border: #fff;
 }
 
 .container-materias {
     height: 100%;
+}
+
+.container-materias-title {
+    position: relative;
+    left: 15px;
+    top: 10px;
+    color: #9C36B5;
+    padding-bottom: 12px;
 }
