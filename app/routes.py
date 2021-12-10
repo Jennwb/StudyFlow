@@ -11,7 +11,7 @@ from app import conexao
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html', title='StudyFlow')
+	return render_template('index.html', title='Study Flow')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -84,7 +84,7 @@ def logout():
 @app.route('/home')
 def home():
 	# if (session['usuario_logado'] != None):        
-		return render_template('home.html', title='StudyFlow')
+		return render_template('home.html', title='Study Flow')
 	# else:
 	# 	return redirect('/')
 	
