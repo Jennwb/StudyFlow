@@ -1,0 +1,109 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<div class="mx-auto">
+    <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
+        <?= $registro[0]->nome_ciclo ?>
+    </h5>
+    <canvas class="d-flex flex-row-reverse" id="myChart" width="550" height="550"></canvas>
+</div>
+
+
+<!-- TRANSFORMAR P PYTHON -->
+<!-- <?php
+$nomeMaterias = array();
+for ($i = 0; $i < count($registro); $i++) {
+    $nomeMaterias[] = $registro[$i]->nome;
+}
+
+for ($i = 0; $i < count($registro); $i++) {
+    $minutos_diarias[] = $registro[$i]->horasDia_materia;
+}
+?> -->
+
+
+<script>
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Doughnut Chart'
+                }
+            }
+        },
+    };
+
+    const DATA_COUNT = 5;
+    const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
+
+    const data = {
+        labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+        datasets: [
+            {
+                label: 'Dataset 1',
+                data: Utils.numbers(NUMBER_CFG),
+                backgroundColor: Object.values(Utils.CHART_COLORS),
+            }
+        ]
+    };
+
+</script>
+
+<script>
+    // let ctx = document.getElementById('myChart').getContext('2d');
+
+    // const materias = [];
+
+    // {% for materia in materias_db %}
+    // materias.push('<?php echo $nomeMaterias[$i]; ?>');
+    // {% endfor %}
+    // <? php
+    // for ($i = 0; $i < count($nomeMaterias); $i++) : ?>
+    //     materias.push('<?php echo $nomeMaterias[$i]; ?>');
+    // <? php endfor; ?>
+
+    // const minutos = [];
+    // <? php
+    // for ($i = 0; $i < count($minutos_diarias); $i++) : ?>
+    //     minutos.push(Math.floor(<? php echo($minutos_diarias[$i]); ?>));
+    // <? php endfor; ?>
+
+    //     let myChart = new Chart(ctx, {
+    //         type: 'doughnut',
+    //         data: {
+    //             labels: materias,
+    //             datasets: [{
+    //                 data: minutos,
+    //                 backgroundColor: [
+    //                     '#76CFBB', '#5781B4', '#FF868A', '#FFCB37', '#A58ACF', '#5BB54E', '#9C4953', '#D5B3AE', '#CFA26B', '#3D8273', '#599C8D'
+    //                 ],
+    //                 borderWidth: 1,
+    //                 datalabels: {
+    //                     anchor: 'center'
+    //                 }
+    //             }]
+    //         },
+    //         options: {
+    //             tooltips: {
+    //                 mode: 'label',
+    //                 callbacks: {
+    //                     label: function (tooltipItem, data) {
+    //                         var indice = tooltipItem.index;
+    //                         var minutos = data.datasets[0].data[indice];
+    //                         var horas = Math.floor(minutos / 60);
+    //                         var min = minutos % 60;
+    //                         var textoHoras = (`00${horas}`).slice(-2);
+    //                         var textoMinutos = (`00${min}`).slice(-2);
+    //                         return data.labels[indice] + ': ' + textoHoras + 'h' + textoMinutos + 'min';
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //     });
+</script>

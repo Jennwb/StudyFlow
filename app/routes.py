@@ -7,11 +7,11 @@ from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMateria
 from app.models.usuario import Usuario
 from app.models.materia import Materia
 from app.models.lembrete import Lembrete
+from app.models.ciclo import CicloDeEstudos, Ciclo_Materia
 from app import db, lm
 from flask_login import login_user, login_required, current_user
 import bcrypt
 from app import conexao
-import sys
 
 # User Loader
 @lm.user_loader
@@ -316,6 +316,30 @@ def excluir(codLembrete):
 		if (current_user.get_id() == id):
 			db.session.delete(lembrete)
 			db.session.commit()
-
-			# Tem que colocar a mensagem de erro por causa da chave estrangeira do ciclo
+			
 			return (redirect("/lembretes"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Ciclo de Estudos
+@app.route('/ciclos')
+def ciclos():
+    if not current_user.is_authenticated:
+        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+        return redirect('/login')
+    else:
+        id_usuario = current_user.get_id()
+        ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario).all()
+        return render_template('ciclo/listar_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo)
