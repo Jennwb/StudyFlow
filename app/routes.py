@@ -1,12 +1,18 @@
+from flask_login.utils import logout_user
 from app import app
 from flask import render_template
 from flask import request, session
 from flask import flash, redirect
 from app.forms import LoginForm, RegistrarForm, AdicionarMaterias
 from app.models.usuario import Usuario
-from app import db
+from app import db, lm
+from flask_login import login_user, login_required, current_user
 import bcrypt
 from app import conexao
+
+@lm.user_loader
+def load_user(id_usuario):
+	return Usuario.query.filter_by(id_usuario=id_usuario).first()
 
 @app.route('/')
 @app.route('/index')
@@ -33,7 +39,7 @@ def login():
 				auth = bcrypt.checkpw(senha, senha_db)
 				if (auth):
 					if (ativo_db == ativo):
-						session['usuario_logado'] = form.usuario.data
+						login_user(usuario_db)
 						return (redirect("/home"))
 					else:
 						flash('Essa conta está inativa.', 'warning')
@@ -77,16 +83,17 @@ def registrar():
 
 @app.route('/logout')
 def logout():
-    session['usuario_logado'] = None
+    logout_user()
     flash(" Acabou de deslogar")
     return redirect('/')
 
 @app.route('/home')
 def home():
-	# if (session['usuario_logado'] != None):        
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else: 
 		return render_template('home.html', title='Study Flow')
-	# else:
-	# 	return redirect('/')
 	
 
 @app.route('/materias')
