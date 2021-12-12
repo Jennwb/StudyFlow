@@ -98,13 +98,18 @@ def home():
 
 @app.route('/materias')
 def materias():
-	# if (session['usuario_logado'] != None):        
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else: 
 		return render_template('materias/listar_materia.html', title='Matérias')
-	# else:
-	# 	return redirect('/')
 
 @app.route('/materias/adicionar', methods=['GET','POST'])
 def adicionar():
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else: 
 	# if (session['usuario_logado'] != None):        
 		form = AdicionarMaterias()
 		if form.validate_on_submit():
