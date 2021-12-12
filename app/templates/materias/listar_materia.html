@@ -50,6 +50,8 @@
         </ul>
     </div>
 
+
+    <!-- CONTEÚDO -->
     <div class="main-content-materias">
         <div class="container-materias">
             <div class="container-materias-title">
@@ -65,10 +67,20 @@
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
+                    {% for materia in materias_db %}
+                    <tr>
+                        <td> {{materia.nome}} </td>
+                        <td> {{materia.nivelAfinidade}} </td>
+                        <td> {{materia.pesoProva}} </td>
+                        <td><a href="/materias/detalhes">i</a></td>
+                        <td><a href="{{ url_for('editar', codMateria=materia.codMateria) }}">i</a></td>
+                        <td><a href="{{ url_for('excluir', codMateria=materia.codMateria) }}">i</a></td>
+                    </tr>
+                    {% endfor %}
                 </table>
             </div>
         </div>
-        <a href="#" class="btn-add"> Adicionar </a>
+        <a href="/materias/adicionar" class="btn-add"> Adicionar </a>
         <a href="#" class="btn-edit"> Editar </a>
         </div>
     </div>

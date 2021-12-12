@@ -2,143 +2,226 @@ from flask_login.utils import logout_user
 from app import app
 from flask import render_template
 from flask import request, session
-from flask import flash, redirect
-from app.forms import LoginForm, RegistrarForm, AdicionarMaterias
+from flask import flash, redirect, url_for
+from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias
 from app.models.usuario import Usuario
+from app.models.materia import Materia
 from app import db, lm
 from flask_login import login_user, login_required, current_user
 import bcrypt
 from app import conexao
+import sys
+
+# User Loader
+
 
 @lm.user_loader
 def load_user(id_usuario):
-	return Usuario.query.filter_by(id_usuario=id_usuario).first()
+    return Usuario.query.filter_by(id_usuario=id_usuario).first()
+
+# Index
+
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html', title='Study Flow')
+    return render_template('index.html', title='Study Flow')
+
+# Login
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	form = LoginForm()
-	if form.validate_on_submit():
-		usuario = form.usuario.data
-		senha = form.senha.data.encode('utf8')
-		ativo = 1
+    form = LoginForm()
+    if form.validate_on_submit():
+        usuario = form.usuario.data
+        senha = form.senha.data.encode('utf8')
+        ativo = 1
 
-	# Autenticação
-		if usuario == 'admin' and senha == 'admin':
-			return "{} - {}".format(form.usuario.data, form.senha.data)
-		else:
-			usuario_db = Usuario.query.filter_by(nomeUsuario=usuario).first()
-			if (usuario_db):
-				ativo_db = usuario_db.ativo
-				senha_db = usuario_db.senha
+    # Autenticação
+        if usuario == 'admin' and senha == 'admin':
+            return "{} - {}".format(form.usuario.data, form.senha.data)
+        else:
+            usuario_db = Usuario.query.filter_by(nomeUsuario=usuario).first()
+            if (usuario_db):
+                ativo_db = usuario_db.ativo
+                senha_db = usuario_db.senha
 
-				auth = bcrypt.checkpw(senha, senha_db)
-				if (auth):
-					if (ativo_db == ativo):
-						login_user(usuario_db)
-						return (redirect("/home"))
-					else:
-						flash('Essa conta está inativa.', 'warning')
-				else: 
-					flash('A senha está incorreta. ', "danger")
-					return redirect("/login")
-			else: 
-				flash('O nome de usuário não existe. ', "danger")
-				return redirect("/login")
-	return render_template('login.html', form=form)
+                auth = bcrypt.checkpw(senha, senha_db)
+                if (auth):
+                    if (ativo_db == ativo):
+                        login_user(usuario_db)
+                        return (redirect("/home"))
+                    else:
+                        flash('Essa conta está inativa.', 'warning')
+                else:
+                    flash('A senha está incorreta. ', "danger")
+                    return redirect("/login")
+            else:
+                flash('O nome de usuário não existe. ', "danger")
+                return redirect("/login")
+    return render_template('login.html', form=form)
 
-@app.route('/registrar', methods=['GET','POST'])
+# Cadastro
+
+
+@app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
-	form = RegistrarForm()
-	if form.validate_on_submit():
-		# Adicionando ao banco de dados
-		salt = bcrypt.gensalt(8)
-		senha_encoded = form.senha.data.encode('utf8')
-		senha_hashed = bcrypt.hashpw(senha_encoded, salt)
+    form = RegistrarForm()
+    if form.validate_on_submit():
+        salt = bcrypt.gensalt(8)
+        senha_encoded = form.senha.data.encode('utf8')
+        senha_hashed = bcrypt.hashpw(senha_encoded, salt)
 
-		# Executa o comando:
-		me = Usuario(form.usuario.data, form.email.data, senha_hashed, salt, 1)
+        # Executa o comando:
+        me = Usuario(form.usuario.data, form.email.data, senha_hashed, salt, 1)
 
-		# Efetua um commit no banco de dados.
-		# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
-		# suas alterações.
-		db.session.add(me)
+        # Efetua um commit no banco de dados.
+        # Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+        # suas alterações.
+        db.session.add(me)
 
-		# Aqui pode pedir uma confirmação 
-		db.session.commit()
+        # Aqui pode pedir uma confirmação
+        db.session.commit()
 
-		flash("Usuário registrado com sucesso!", "success")
-		return (redirect("/login"))
-	elif len(form.errors.items()) > 0:
-		for campo, mensagens in form.errors.items():
- 			for m in mensagens:
- 				flash(m, "danger")
-		return (redirect("/registrar"))
+        flash("Usuário registrado com sucesso!", "success")
+        return (redirect("/login"))
+    elif len(form.errors.items()) > 0:
+        for campo, mensagens in form.errors.items():
+            for m in mensagens:
+                flash(m, "danger")
+        return (redirect("/registrar"))
 
-	return render_template("registrar.html", form=form)
+    return render_template("registrar.html", form=form)
+
+# Logout
+
 
 @app.route('/logout')
 def logout():
     logout_user()
-    flash(" Acabou de deslogar")
     return redirect('/')
+
+# Home
+
 
 @app.route('/home')
 def home():
-	if not current_user.is_authenticated:
-		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
-		return redirect('/login')
-	else: 
-		return render_template('home.html', title='Study Flow')
-	
+    if not current_user.is_authenticated:
+        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+        return redirect('/login')
+    else:
+        return render_template('home.html', title='Study Flow')
+
+# Matérias
+
 
 @app.route('/materias')
 def materias():
-	if not current_user.is_authenticated:
-		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
-		return redirect('/login')
-	else: 
-		return render_template('materias/listar_materia.html', title='Matérias')
+    if not current_user.is_authenticated:
+        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+        return redirect('/login')
+    else:
+        id_usuario = current_user.get_id()
+        materias_db = Materia.query.filter_by(id_usuario=id_usuario).all()
+        return render_template('materias/listar_materia.html', title='Matérias', materias_db=materias_db)
 
-@app.route('/materias/adicionar', methods=['GET','POST'])
+# Matérias - adicionar
+
+
+@app.route('/materias/adicionar', methods=['GET', 'POST'])
 def adicionar():
+    if not current_user.is_authenticated:
+        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+        return redirect('/login')
+    else:
+        form = AdicionarMaterias()
+        if form.validate_on_submit():
+            id_usuario = current_user.get_id()
+            nome = form.nome.data
+            nivel_afinidade = form.nivel_afinidade.data
+            peso_prova = form.peso_prova.data
+
+            # Executa o comando:
+            materia = Materia(id_usuario, nome, nivel_afinidade, peso_prova)
+
+            # Efetua um commit no banco de dados.
+            # Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+            # suas alterações.
+            db.session.add(materia)
+
+            # Aqui pode pedir uma confirmação
+            db.session.commit()
+
+            flash("Matéria registrada com sucesso!", "success")
+            return (redirect("/materias"))
+
+        elif len(form.errors.items()) > 0:
+            for campo, mensagens in form.errors.items():
+                for m in mensagens:
+                    flash(m, "danger")
+            return (redirect("/materias/nova_materia.html"))
+
+        return render_template('materias/nova_materia.html', form=form)
+
+# Matérias - editar ----- NÃO PRONTO
+@app.route('/editar/<codMateria>', methods=['GET', 'POST'])
+def editar(codMateria):
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
-	else: 
-	# if (session['usuario_logado'] != None):        
-		form = AdicionarMaterias()
-		if form.validate_on_submit():
-			nome = form.nome.data
-			nivel_afinidade = form.nivel_afinidade
-			peso_prova = form.peso_prova
+	else:
+		codMateria = codMateria
+		materia = Materia.query.filter_by(codMateria=codMateria).first()
+		id = materia.id_usuario
+		if (current_user.get_id() == id):
+			form = EditarMaterias()
+			if form.validate_on_submit():
+				# (materia.nome).update(dict(nome=form.nome.data))
+				# (materia.nivelAfinidade).update(dict(nivelAfinidade=form.nivel_afinidade.data))
+				# (materia.pesoProva).update(dict(pesoProva=form.peso_prova.data))
 
-			# Consertar 
-			id_usuario = '0'
+				materia = Materia.query.filter_by(codMateria=codMateria).first()
+				materia.nome = form.nome.data
+				# db.session.commit()
+				materia.nivelAfinidade = form.nivel_afinidade.data
+				# db.session.commit()
+				materia.pesoProva = form.peso_prova.data
+				# db.session.commit()
 
-			materia = Usuario(id_usuario, nome, nivel_afinidade, peso_prova)
+				# num_rows_updated = Materia.query.filter_by(codMateria=codMateria).update(dict(nome = form.nome.data, nivelAfinidade = form.nivel_afinidade.data, pesoProva = form.peso_prova.data))
+				db.session.merge(materia)
+				db.session.flush()
+				db.session.commit()
 
-			# Efetua um commit no banco de dados.
-			# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
-			# suas alterações.
-			db.session.add(materia)
+	            # Aqui pode pedir uma confirmação
+				
 
-			# Aqui pode pedir uma confirmação 
+				flash("Matéria registrada com sucesso!", "success")
+				return (redirect("/materias"))
+
+			elif len(form.errors.items()) > 0:
+				for campo, mensagens in form.errors.items():
+					for m in mensagens:
+						flash(m, "danger")
+				return (redirect("/materias/editar_materia.html"))
+
+			return render_template('/materias/editar_materia.html', form=form, materia=materia)
+
+# Matérias - excluir
+@app.route('/excluir/<codMateria>', methods=['GET', 'POST'])
+def excluir(codMateria):
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		codMateria = codMateria
+		materia = Materia.query.filter_by(codMateria=codMateria).first()
+		id = materia.id_usuario
+		if (current_user.get_id() == id):
+			materia = Materia.query.filter_by(codMateria=codMateria).first()
+			db.session.delete(materia)
 			db.session.commit()
 
-			flash("Matéria registrada com sucesso!", "success")
+			# Tem que colocar a mensagem de erro por causa da chave estrangeira do ciclo
 			return (redirect("/materias"))
-
-		elif len(form.errors.items()) > 0:
-			for campo, mensagens in form.errors.items():
-			 	for m in mensagens:
- 					flash(m, "danger")
-			return (redirect("/materias/nova_materia.html"))
-
-		return render_template('materias/nova_materia.html', form=form)
-	# else:
-	# 	return redirect('/')

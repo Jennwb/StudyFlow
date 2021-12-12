@@ -22,7 +22,8 @@ class Usuario(db.Model):
         return False
 
     def get_id(self):
-        return str(self.id_usuario)
+        id = int(self.id_usuario)
+        return id
 
     def __init__(self, nome, email, senha, salt, ativo):
         self.nomeUsuario = nome
