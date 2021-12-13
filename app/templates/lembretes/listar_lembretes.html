@@ -14,42 +14,42 @@
     {% block conteudo %}
 
     <!-- CONTEÚDO -->
-    <div class="main-content-materias">
-        <div class="container-materias">
-            <div class="container-materias-title">
+    <div class="main-content-lembretes">
+        <div class="container-lembretes">
+            <div class="container-lembretes-title">
                 <h2> Matérias </h2>
             </div>
             <div class="table">
                 <table class="table mx-auto w-75">
                     <tr>
                         <th>Nome</th>
-                        <th>Nível de Afinidade</th>
-                        <th>Peso na prova</th>
+                        <th>Data</th>
+                        <th>Hora</th>
                         <th>Detalhes</th>
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
-                    {% for materia in materias_db %}
+                    {% for lembrete in lembretes_db %}
                     <tr>
-                        <td> {{materia.nome}} </td>
-                        <td> {{materia.nivelAfinidade}} </td>
-                        <td> {{materia.pesoProva}} </td>
-                        <td><a href="/materias/detalhes">i</a></td>
-                        <td><a href="{{ url_for('editar', codMateria=materia.codMateria) }}">i</a></td>
-                        <td><a href="{{ url_for('excluir', codMateria=materia.codMateria) }}">i</a></td>
+                        <td> {{lembrete.nome}} </td>
+                        <td> {{lembrete.nivelAfinidade}} </td>
+                        <td> {{lembrete.pesoProva}} </td>
+                        <td><a href="{{ url_for('editarL', codLembrete=lembrete.codLembrete) }}">i</a></td>
+                        <td><a href="{{ url_for('editarL', codLembrete=lembrete.codLembrete) }}">i</a></td>
+                        <td><a href="{{ url_for('excluirL', codLembrete=lembrete.codLembrete) }}">i</a></td>
                     </tr>
                     {% endfor %}
                 </table>
             </div>
         </div>
-        <a href="/materias/adicionar" class="btn-add"> Adicionar </a>
+        <a href="/lembretes/adicionar" class="btn-add"> Adicionar </a>
         <a href="#" class="btn-edit"> Editar </a>
         </div>
     </div>
     
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+    
     {% endblock %}
 
 </body>
