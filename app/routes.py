@@ -36,6 +36,10 @@ def home():
     else:
         return render_template('home.html', title='Study Flow')
 
+
+
+		
+
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
