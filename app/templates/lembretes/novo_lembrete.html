@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Novo Lembrete </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+  {% extends 'base.html' %}
+
+  {% block conteudo %}
+
+  {% set mensagens = get_flashed_messages(with_categories=true) %}
+  {% if mensagens %}
+  {% for categoria, msg in mensagens %}
+  <div class="alert alert-{{categoria}}" role="alert">
+    {{ msg }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <main class="form-novo_lembrete">
+
+    <form class="form-novo_lembrete" action="/lembretes/adicionar" method="POST">
+      {{ form.csrf_token() }}
+      <h2 class="h2 mb-3 fw-normal"> <b>Adicione um lembrete</b> </h2>
+
+      <div class="form-input">
+        <label for="floatingInput">Nome do Lembrete:</label>
+        {{ form.nome(class="form-control", placeholder="Insira o nome da lembrete") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Descrição: </label>
+        {{ form.descricao(class="form-control", placeholder="Escreva uma descrição se precisar...") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Tipo de lembrete:</label>
+        {{ form.tipo(class="form-control", placeholder="Selecione o tipo de lembrete:") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Data e hora do lembrete</label>
+        {{ form.data_hora(class="form-control", placeholder="Defina a data e hora do lembrete:") }}
+      </div>
+
+      {{ form.adicionar(class="btn btn-primary")}}<br />
+    </form>
+
+  </main>
+
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">&copy; 2021 StudyFlow, IFRN </span>
+      </div>
+    </footer>
+  </div>
+
+  {% endblock %}
+</body>
+
+</html>

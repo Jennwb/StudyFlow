@@ -3,8 +3,8 @@ from app import db
 class Lembrete(db.Model):
     __tablename__="Lembrete"
     id_usuario = db.Column(db.String(100))
-    tipo = db.Column(db.String(100))
-    nome = db.Column(db.String(100))
+    tipoLembrete = db.Column(db.String(100))
+    nomeLembrete = db.Column(db.String(100))
     descricao = db.Column(db.String(500))
     # data_hora = (pesquisar)
     codLembrete = db.Column(db.Integer, primary_key=True)

@@ -3,7 +3,7 @@ from app import app
 from flask import render_template
 from flask import request, session
 from flask import flash, redirect, url_for
-from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes
+from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes, EditarLembretes
 from app.models.usuario import Usuario
 from app.models.materia import Materia
 from app.models.lembrete import Lembrete
@@ -156,7 +156,7 @@ def adicionar():
 
         return render_template('materias/nova_materia.html', form=form)
 
-# Matérias - editar ----- NÃO PRONTO
+# Matérias - editar
 @app.route('/editar/<codMateria>', methods=['GET', 'POST'])
 def editar(codMateria):
 	if not current_user.is_authenticated:
@@ -255,56 +255,46 @@ def adicionarL():
 			for campo, mensagens in form.errors.items():
 				for m in mensagens:
 					flash(m, "danger")
-			return (redirect("/lembretes/nova_materia.html"))
+			return (redirect("/lembretes/novo_lembrete.html"))
 
-		return render_template('lembretes/nova_materia.html', form=form)
+		return render_template('lembretes/novo_lembrete.html', form=form)
 
-# Lembretes - editar ----- NÃO PRONTO
-@app.route('/editar/<codLembrete>', methods=['GET', 'POST'])
+# Lembretes - editar
+@app.route('/lembretes/editar/<codLembrete>', methods=['GET', 'POST'])
 def editarL(codLembrete):
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
 	else:
 		codLembrete = codLembrete
-		materia = Materia.query.filter_by(codLembrete=codLembrete).first()
-		id = materia.id_usuario
+		lembrete = Lembrete.query.filter_by(codLembrete=codLembrete).first()
+		id = lembrete.id_usuario
 		if (current_user.get_id() == id):
-			form = EditarMaterias()
+			form = EditarLembretes()
 			if form.validate_on_submit():
-				# (materia.nome).update(dict(nome=form.nome.data))
-				# (materia.nivelAfinidade).update(dict(nivelAfinidade=form.nivel_afinidade.data))
-				# (materia.pesoProva).update(dict(pesoProva=form.peso_prova.data))
-
-				materia = Materia.query.filter_by(codLembrete=codLembrete).first()
-				materia.nome = form.nome.data
-				# db.session.commit()
-				materia.nivelAfinidade = form.nivel_afinidade.data
-				# db.session.commit()
-				materia.pesoProva = form.peso_prova.data
-				# db.session.commit()
-
-				# num_rows_updated = Materia.query.filter_by(codLembrete=codLembrete).update(dict(nome = form.nome.data, nivelAfinidade = form.nivel_afinidade.data, pesoProva = form.peso_prova.data))
-				db.session.merge(materia)
-				db.session.flush()
+				lembrete = Lembrete.query.filter_by(codLembrete=codLembrete).first()
+				lembrete.nome = form.nome.data
+				lembrete.tipoLembrete = form.tipo.data
+				lembrete.descricao = form.descricao.data
+				lembrete.data_horaLembrete = form.data_hora.data
+				db.session.add(lembrete)
 				db.session.commit()
 
 	            # Aqui pode pedir uma confirmação
-				
 
-				flash("Matéria registrada com sucesso!", "success")
+				flash("Lembrete registrado com sucesso!", "success")
 				return (redirect("/lembretes"))
 
 			elif len(form.errors.items()) > 0:
 				for campo, mensagens in form.errors.items():
 					for m in mensagens:
 						flash(m, "danger")
-				return (redirect("/lembretes/editar_materia.html"))
+				return (redirect("/lembretes/editar_lembrete.html"))
 
-			return render_template('/lembretes/editar_materia.html', form=form, materia=materia)
+			return render_template('/lembretes/editar_lembrete.html', form=form, lembrete=lembrete)
 
 # Lembretes - excluir
-@app.route('/excluir/<codLembrete>', methods=['GET', 'POST'])
+@app.route('/lembretes/excluir/<codLembrete>', methods=['GET', 'POST'])
 def excluirL(codLembrete):
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
