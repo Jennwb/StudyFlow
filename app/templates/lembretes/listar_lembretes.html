@@ -23,8 +23,7 @@
                 <table class="table mx-auto w-75">
                     <tr>
                         <th>Nome</th>
-                        <th>Data</th>
-                        <th>Hora</th>
+                        <th>Data/Hora</th>
                         <th>Tipo</th>
                         <th>Detalhes</th>
                         <th>Editar</th>
@@ -33,8 +32,8 @@
                     {% for lembrete in lembretes_db %}
                     <tr>
                         <td> {{lembrete.nome}} </td>
-                        <td> {{lembrete.nivelAfinidade}} </td>
-                        <td> {{lembrete.pesoProva}} </td>
+                        <td> {{lembrete.data_hora}} </td>
+                        <td> {{lembrete.tipoLembrete}}</td>
                         <td><a href="{{ url_for('editarL', codLembrete=lembrete.codLembrete) }}">i</a></td>
                         <td><a href="{{ url_for('editarL', codLembrete=lembrete.codLembrete) }}">i</a></td>
                         <td><a href="{{ url_for('excluirL', codLembrete=lembrete.codLembrete) }}">i</a></td>
