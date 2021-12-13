@@ -22,7 +22,19 @@ def load_user(id_usuario):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Study Flow')
+	if not current_user.is_authenticated:
+		return render_template('index.html', title='Study Flow')
+	else:
+		return render_template('home.html', title='Study Flow')
+
+# Home
+@app.route('/home')
+def home():
+    if not current_user.is_authenticated:
+        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+        return redirect('/login')
+    else:
+        return render_template('home.html', title='Study Flow')
 
 # Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -92,19 +104,6 @@ def registrar():
 def logout():
     logout_user()
     return redirect('/')
-
-# Home
-@app.route('/home')
-def home():
-    if not current_user.is_authenticated:
-        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
-        return redirect('/login')
-    else:
-        return render_template('home.html', title='Study Flow')
-
-
-
-
 
 
 
@@ -220,7 +219,7 @@ def excluir(codMateria):
 
 
 
-			
+
 
 # Lembretes
 @app.route('/lembretes')
