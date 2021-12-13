@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipleField
 from wtforms.validators import InputRequired, Email, EqualTo, AnyOf, NumberRange
 from wtforms.fields.html5 import EmailField, DateTimeField, DateField, DecimalField, SelectField
+import datetime
 
 class LoginForm(FlaskForm):
     usuario = StringField("usuario", validators=[InputRequired()])
@@ -42,9 +43,21 @@ class EditarLembretes(FlaskForm):
     adicionar = SubmitField("Pronto!")
 
 class AdicionarCiclos(FlaskForm):
+
+    # CHECAR SE AS DATAS FAZEM SENTIDO
+
+    # def checar_datas(form, field):
+    #         result = super(AdicionarCiclos, field).validate()
+    #         if (field.startdate.data>field.enddate.data):
+    #             return False
+    #         else:
+    #             return result
+                
     nome = StringField("nome", validators=[InputRequired()])
-    data_inicial = DateField('data_inicial', validators=[InputRequired()], format='%d-%m-%Y')
-    data_final = DateField('data_final', validators=[InputRequired()], format='%d-%m-%Y')
+    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y',)
+    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y')
     horas_semanais = DecimalField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], places=3)
     materias = SelectMultipleField('tipo', choices=[()], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")
+
+    
