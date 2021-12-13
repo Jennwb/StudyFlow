@@ -38,7 +38,7 @@ def home():
 
 
 
-		
+
 
 # Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -171,7 +171,7 @@ def editar(codMateria):
 		materia = Materia.query.filter_by(codMateria=codMateria).first()
 		id = materia.id_usuario
 		if (current_user.get_id() == id):
-			form = EditarMaterias()
+			form = EditarMaterias(nome=materia.nome, nivel_afinidade=materia.nivelAfinidade, peso_prova=materia.pesoProva)
 			if form.validate_on_submit():
 				materia = Materia.query.filter_by(codMateria=codMateria).first()
 				materia.nome = form.nome.data
@@ -274,10 +274,10 @@ def editarL(codLembrete):
 		lembrete = Lembrete.query.filter_by(codLembrete=codLembrete).first()
 		id = lembrete.id_usuario
 		if (current_user.get_id() == id):
-			form = EditarLembretes()
+			form = EditarLembretes(nome=lembrete.nomeLembrete, descricao=lembrete.descricao, tipo=lembrete.tipoLembrete, data_hora=lembrete.data_horaLembrete)
 			if form.validate_on_submit():
 				lembrete = Lembrete.query.filter_by(codLembrete=codLembrete).first()
-				lembrete.nome = form.nome.data
+				lembrete.nomeLembrete = form.nome.data
 				lembrete.tipoLembrete = form.tipo.data
 				lembrete.descricao = form.descricao.data
 				lembrete.data_horaLembrete = form.data_hora.data

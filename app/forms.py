@@ -31,12 +31,12 @@ class AdicionarLembretes(FlaskForm):
     nome = StringField("nome", validators=[InputRequired()])
     descricao = StringField("descricao", validators=[InputRequired()])
     tipo = SelectField('tipo', choices=[('', 'Selecione o tipo de lembrete:'), ('0', 'Lembrete de Estudos'), ('1', 'Lembrete da Prova')], validators=[InputRequired()])
-    data_hora = DateTimeField('data_hora', format='%Y-%m-%d %H:%M:%S', validators=[InputRequired()])
+    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%Y-%m-%d %H:%M:%S')
     adicionar = SubmitField("Pronto!")
     
 class EditarLembretes(FlaskForm):
     nome = StringField("nome", validators=[InputRequired()])
     descricao = StringField("descricao", validators=[InputRequired()])
     tipo = SelectField('tipo', choices=[('', 'Selecione o tipo de lembrete:'), ('0', 'Lembrete de Estudos'), ('1', 'Lembrete da Prova')], validators=[InputRequired()])
-    data_hora = DateTimeField('data_hora', format='%Y-%m-%d %H:%M:%S', validators=[InputRequired()])
+    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%Y-%m-%d %H:%M:%S')
     adicionar = SubmitField("Pronto!")
