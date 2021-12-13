@@ -54,8 +54,12 @@ class AdicionarCiclos(FlaskForm):
     #             return result
                 
     nome = StringField("nome", validators=[InputRequired()])
-    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y',)
-    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y')
+
+    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y',)
+    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y')
+    # data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y',)
+    # data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y')
+
     horas_semanais = DecimalField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], places=3)
     materias = SelectMultipleField('tipo', choices=[()], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")
