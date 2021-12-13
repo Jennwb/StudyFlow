@@ -7,7 +7,7 @@ from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMateria
 from app.models.usuario import Usuario
 from app.models.materia import Materia
 from app.models.lembrete import Lembrete
-from app.models.ciclo import CicloDeEstudos, Ciclo_Materia
+# from app.models.ciclo import CicloDeEstudos, Ciclo_Materia
 from app import db, lm
 from flask_login import login_user, login_required, current_user
 import bcrypt
@@ -102,6 +102,14 @@ def home():
     else:
         return render_template('home.html', title='Study Flow')
 
+
+
+
+
+
+
+
+
 # Matérias
 @app.route('/materias')
 def materias():
@@ -175,8 +183,7 @@ def editar(codMateria):
 				# db.session.commit()
 
 				# num_rows_updated = Materia.query.filter_by(codMateria=codMateria).update(dict(nome = form.nome.data, nivelAfinidade = form.nivel_afinidade.data, pesoProva = form.peso_prova.data))
-				db.session.merge(materia)
-				db.session.flush()
+				db.session.add(materia)
 				db.session.commit()
 
 	            # Aqui pode pedir uma confirmação
@@ -210,6 +217,10 @@ def excluir(codMateria):
 
 			# Tem que colocar a mensagem de erro por causa da chave estrangeira do ciclo
 			return (redirect("/materias"))
+
+
+
+			
 
 # Lembretes
 @app.route('/lembretes')
@@ -305,7 +316,7 @@ def editarL(codLembrete):
 
 # Lembretes - excluir
 @app.route('/excluir/<codLembrete>', methods=['GET', 'POST'])
-def excluir(codLembrete):
+def excluirL(codLembrete):
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
