@@ -23,15 +23,15 @@
     {% endfor %}
     {% endif %}
 
-    <main class="form-nova_materia">
+    <main class="form-editar_materia">
 
-        <form class="form-nova_materia" action="/materias/adicionar" method="POST">
+        <form class="form-editar_materia" action="{{ url_for('editar', codMateria=materia.codMateria) }}" method="POST">
             {{ form.csrf_token() }}
-            <h2 class="h2 mb-3 fw-normal"> <b>Adicione uma matéria</b> </h2>
+            <h2 class="h2 mb-3 fw-normal"> <b>Edite sua matéria</b> </h2>
 
             <div class="form-input">
                 <label for="floatingInput">Nome da Matéria:</label>
-                {{ form.nome(class="form-control", placeholder=materia.nome) }}
+                {{ form.nome(class="form-control", value=materia.nome) }}
             </div>
 
             <div class="form-input">

@@ -169,24 +169,14 @@ def editar(codMateria):
 		if (current_user.get_id() == id):
 			form = EditarMaterias()
 			if form.validate_on_submit():
-				# (materia.nome).update(dict(nome=form.nome.data))
-				# (materia.nivelAfinidade).update(dict(nivelAfinidade=form.nivel_afinidade.data))
-				# (materia.pesoProva).update(dict(pesoProva=form.peso_prova.data))
-
 				materia = Materia.query.filter_by(codMateria=codMateria).first()
 				materia.nome = form.nome.data
-				# db.session.commit()
 				materia.nivelAfinidade = form.nivel_afinidade.data
-				# db.session.commit()
 				materia.pesoProva = form.peso_prova.data
-				# db.session.commit()
-
-				# num_rows_updated = Materia.query.filter_by(codMateria=codMateria).update(dict(nome = form.nome.data, nivelAfinidade = form.nivel_afinidade.data, pesoProva = form.peso_prova.data))
 				db.session.add(materia)
 				db.session.commit()
 
 	            # Aqui pode pedir uma confirmação
-				
 
 				flash("Matéria registrada com sucesso!", "success")
 				return (redirect("/materias"))
