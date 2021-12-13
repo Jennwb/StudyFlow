@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
-from wtforms.validators import InputRequired, Email, EqualTo, AnyOf
-from wtforms.fields.html5 import EmailField, DateTimeField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipleField
+from wtforms.validators import InputRequired, Email, EqualTo, AnyOf, NumberRange
+from wtforms.fields.html5 import EmailField, DateTimeField, DateField, DecimalField, SelectField
 
 class LoginForm(FlaskForm):
     usuario = StringField("usuario", validators=[InputRequired()])
@@ -31,12 +31,20 @@ class AdicionarLembretes(FlaskForm):
     nome = StringField("nome", validators=[InputRequired()])
     descricao = StringField("descricao", validators=[InputRequired()])
     tipo = SelectField('tipo', choices=[('', 'Selecione o tipo de lembrete:'), ('0', 'Lembrete de Estudos'), ('1', 'Lembrete da Prova')], validators=[InputRequired()])
-    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%Y-%m-%d %H:%M:%S')
+    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%d-%m-%Y %H:%M:%S')
     adicionar = SubmitField("Pronto!")
     
 class EditarLembretes(FlaskForm):
     nome = StringField("nome", validators=[InputRequired()])
     descricao = StringField("descricao", validators=[InputRequired()])
     tipo = SelectField('tipo', choices=[('', 'Selecione o tipo de lembrete:'), ('0', 'Lembrete de Estudos'), ('1', 'Lembrete da Prova')], validators=[InputRequired()])
-    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%Y-%m-%d %H:%M:%S')
+    data_hora = DateTimeField('data_hora', validators=[InputRequired()], format='%d-%m-%Y %H:%M:%S')
+    adicionar = SubmitField("Pronto!")
+
+class AdicionarCiclos(FlaskForm):
+    nome = StringField("nome", validators=[InputRequired()])
+    data_inicial = DateField('data_inicial', validators=[InputRequired()], format='%d-%m-%Y')
+    data_final = DateField('data_final', validators=[InputRequired()], format='%d-%m-%Y')
+    horas_semanais = DecimalField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], places=3)
+    materias = SelectMultipleField('tipo', choices=[()], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")

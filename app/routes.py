@@ -1,13 +1,14 @@
+from types import NoneType
 from flask_login.utils import logout_user
 from app import app
 from flask import render_template
 from flask import request, session
 from flask import flash, redirect, url_for
-from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes, EditarLembretes
+from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes, EditarLembretes, AdicionarCiclos
 from app.models.usuario import Usuario
 from app.models.materia import Materia
 from app.models.lembrete import Lembrete
-# from app.models.ciclo import CicloDeEstudos, Ciclo_Materia
+from app.models.ciclo import CicloDeEstudos, Ciclo_Materia
 from app import db, lm
 from flask_login import login_user, login_required, current_user
 import bcrypt
@@ -325,15 +326,96 @@ def excluirL(codLembrete):
 
 
 
+# Ciclos - adicionar
+@app.route('/ciclos/adicionar', methods=['GET', 'POST'])
+def adicionarL():
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		form = AdicionarCiclos()
 
+		if form.validate_on_submit():
+			id_usuario = current_user.get_id()
+			nome = form.nome.data
+			data_inicial = form.data_inicial.data
+			data_final = form.data_final.data
+			horas_semanais = form.horas_semanais.data
+			materias = form.materias.data
+			
+            # ^^^^^^^^^^^^ Transformar as horas em minutos ^^^^^^^^^^^^^^^^
+			minutos_diarios = 0
+
+			# Executa o comando:
+			ciclo = CicloDeEstudos(id_usuario, nome, data_inicial, data_final, horas_semanais)
+
+			# Efetua um commit no banco de dados.
+			# Por padrão, não é efetuado commit automaticamente. Você deve commitar para salvar
+			# suas alterações.
+			db.session.add(ciclo)
+
+			# Aqui pode pedir uma confirmação
+			db.session.commit()
+
+			peso_final = []
+			media_m = []
+			hr_m = []
+			
+			for m in materias:
+				materia_db = Materia.query.filter_by(codMateria=m).first()
+				peso_prova = materia_db.pesoProva
+				nivel_afinidade = materia_db.nivelAfinidade
+
+				peso_final[m] = peso_prova + nivel_afinidade
+
+			peso_total = sum(peso_final)
+			
+			for ma in materias:
+				media_m[ma] = (peso_final[ma] / peso_total)
+				hr_m[ma] = media_m[ma] * minutos_diarios
+
+			ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario, inicioCiclo=data_inicial, fimCiclo=data_final).first()
+			codCiclo = ciclo.codCiclo
+
+			c_m = Ciclo_Materia(codCiclo, materias, hr_m)
+			db.session.add(c_m)
+			db.session.commit()
+
+			flash("Ciclo de estudos registrado com sucesso!", "success")
+			return (redirect("/ciclos"))
+
+		elif len(form.errors.items()) > 0:
+			for campo, mensagens in form.errors.items():				
+				for m in mensagens:
+					flash(m, "danger")
+			return (redirect("/ciclos/novo_ciclo.html"))
+
+		return render_template('ciclos/novo_ciclo.html', form=form)
 
 # Ciclo de Estudos
 @app.route('/ciclos')
 def ciclos():
-    if not current_user.is_authenticated:
-        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
-        return redirect('/login')
-    else:
-        id_usuario = current_user.get_id()
-        ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario).all()
-        return render_template('ciclo/listar_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo)
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		id_usuario = current_user.get_id()
+		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario).first()
+		if 'ciclo.codCiclo' in locals():
+			codCiclo = ciclo.codCiclo
+			codMaterias = Ciclo_Materia.query.fliter_by(codCiclo=codCiclo).all()
+
+			materias = []
+			minutos = []
+
+			for cd in codMaterias:
+				m = Materia.query.fliter_by(cd=cd).first()
+				materias = m.nome
+			for c in codMaterias:
+				d = codMaterias = Ciclo_Materia.query.fliter_by(codCiclo=codCiclo, c=c).first()
+				minutos = d.horasDia_materia
+					
+			return render_template('ciclodeestudos/detalhes_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo, materias=materias, minutos=minutos)			
+		else:
+			flash('Não há ciclos cadastrados.', 'warning')
+			return redirect('/home')
