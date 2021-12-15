@@ -1,26 +1,43 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="mx-auto">
-    <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
-        TÍTULO
-    </h5>
-    <canvas class="d-flex flex-row-reverse" id="myChart" width="550" height="550"></canvas>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Novo ciclo de estudos </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+</head>
 
-<script>
-    let ctx = document.getElementById('myChart').getContext('2d');
-    const materias = [];
-    const minutos = [];
-</script>
+<body>
+    <!-- O gráfico não funciona caso extenda alguma página, n sei pq T.T -->
 
-{% for materia in materia %}
-<script> materias.push('{{ materia.nome }}');</script>
-{% endfor %}
+    {% block conteudo %}
 
-{% for minutos in minutos %}
-<script> minutos.push('{{ minutos }}');</script>
-{% endfor %}
+    <div class="mx-auto">
+        <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
+            TÍTULO
+        </h5>
+        <canvas class="d-flex flex-row-reverse" id="myChart" width="550" height="550"></canvas>
+    </div>
 
+    <script>
+        let ctx = document.getElementById('myChart').getContext('2d');
+        const materias = [];
+        const minutos = [];
+    </script>
+
+    {% for materia in materia %}
+    <script> materias.push('{{ materia.nome }}');</script>
+    {% endfor %}
+
+    {% for minutos in minutos %}
+    <script> minutos.push('{{ minutos }}');</script>
+    {% endfor %}
+
+    {% endblock %}
+</body>
 <script>
     let myChart = new Chart(ctx, {
         type: 'doughnut',
@@ -55,3 +72,5 @@
         },
     });
 </script>
+
+</html>
