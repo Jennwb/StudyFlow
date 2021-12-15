@@ -377,8 +377,8 @@ def adicionarC():
 			peso_total = sum(peso_final)
 
 			# ^^^^^^^ Arrumar um jeito melhor de recuperar o ciclo recém-cadastrado ^^^^^^
-			ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario, inicioCiclo=data_inicial, fimCiclo=data_final).first()
-			codCiclo = ciclo.codCiclo
+			# ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario, inicioCiclo=data_inicial, fimCiclo=data_final).first()
+			# codCiclo = ciclo.codCiclo
 			
 			for ma in materias:
 				materias.reverse()
@@ -389,7 +389,7 @@ def adicionarC():
 				mm = media_m.pop()
 				hr_m = mm * minutos_diarios
 				# hr_m[ma] = media_m[ma] * minutos_diarios
-				c_m = Ciclo_Materia(codCiclo, ma, hr_m)
+				c_m = Ciclo_Materia(ciclo.codCiclo, ma, hr_m)
 				db.session.add(c_m)
 				db.session.commit()
 				materias.reverse()
