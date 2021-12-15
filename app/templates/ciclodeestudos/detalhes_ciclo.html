@@ -19,7 +19,7 @@
         <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
             TÍTULO
         </h5>
-        <canvas class="d-flex flex-row-reverse" id="myChart" width="550" height="550"></canvas>
+        <canvas class="d-flex flex-row-reverse" id="myChart" width="300" height="300"></canvas>
     </div>
 
     <script>
@@ -28,8 +28,8 @@
         const minutos = [];
     </script>
 
-    {% for materia in materia %}
-    <script> materias.push('{{ materia.nome }}');</script>
+    {% for materia in materias %}
+    <script> materias.push('{{ materia }}');</script>
     {% endfor %}
 
     {% for minutos in minutos %}

@@ -421,16 +421,16 @@ def ciclos():
 			# flash('Não há ciclos cadastrados.', 'warning')
 			# return redirect('/home')
 			codCiclo = ciclo.codCiclo
-			codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+			Ciclo_m = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
 
 			materias = []
 			minutos = []
 
-			for cd in codMaterias:
+			for cd in Ciclo_m:
 				m = Materia.query.filter_by(codMateria=cd.codMateria).first()
 				materias.append(m.nome)
-			for c in codMaterias:
-				d = codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo, codMateria=c.codMateria).first()
+			for c in Ciclo_m:
+				d = Ciclo_Materia.query.filter_by(codCiclo=codCiclo, codMateria=c.codMateria).first()
 				minutos.append(d.horasDia_materia)
 					
 			return render_template('ciclodeestudos/detalhes_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo, materias=materias, minutos=minutos)
