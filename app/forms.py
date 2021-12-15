@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipleField
-from wtforms.validators import InputRequired, Email, EqualTo, AnyOf, NumberRange
-from wtforms.fields.html5 import EmailField, DateTimeField, DateField, DecimalField, SelectField
+from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
+from wtforms.fields import EmailField, DateTimeField, DateField, DecimalField, SelectField
 import datetime
 
 class LoginForm(FlaskForm):
@@ -61,7 +61,7 @@ class AdicionarCiclos(FlaskForm):
     # data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y')
 
     horas_semanais = DecimalField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], places=3)
-    materias = SelectMultipleField('tipo', choices=[()], validators=[InputRequired()])
+    materias = SelectMultipleField('tipo', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")
 
     

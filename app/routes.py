@@ -328,7 +328,7 @@ def excluirL(codLembrete):
 
 # Ciclos - adicionar
 @app.route('/ciclos/adicionar', methods=['GET', 'POST'])
-def adicionarL():
+def adicionarC():
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
