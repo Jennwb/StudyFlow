@@ -358,29 +358,41 @@ def adicionarC():
 			# Aqui pode pedir uma confirmação
 			db.session.commit()
 
-			peso_final = [] * 20
-			media_m = [] * 20
-			hr_m = [] * 20
+			ultimo = materias.pop()
+			materias.append(ultimo)
+			n_indices = ultimo + 2
+
+			peso_final = [] * n_indices
+			media_m = [] * n_indices
+			hr_m = 0
 			
 			for m in materias:
 				materia_db = Materia.query.filter_by(codMateria=m).first()
 				peso_prova = materia_db.pesoProva
 				nivel_afinidade = materia_db.nivelAfinidade
 
-				peso_final[m] = peso_prova + nivel_afinidade
+				peso_final.insert(m, peso_prova + nivel_afinidade)
+				# peso_final[m] = peso_prova + nivel_afinidade
 
 			peso_total = sum(peso_final)
-			
-			for ma in materias:
-				media_m[ma] = (peso_final[ma] / peso_total)
-				hr_m[ma] = media_m[ma] * minutos_diarios
 
+			# ^^^^^^^ Arrumar um jeito melhor de recuperar o ciclo recém-cadastrado ^^^^^^
 			ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario, inicioCiclo=data_inicial, fimCiclo=data_final).first()
 			codCiclo = ciclo.codCiclo
+			
+			for ma in materias:
+				materias.reverse()
 
-			c_m = Ciclo_Materia(codCiclo, materias, hr_m)
-			db.session.add(c_m)
-			db.session.commit()
+				pf = peso_final.pop()
+				media_m.insert(ma, (pf / peso_total))
+				# media_m[ma] = (peso_final[ma] / peso_total)
+				mm = media_m.pop()
+				hr_m = mm * minutos_diarios
+				# hr_m[ma] = media_m[ma] * minutos_diarios
+				c_m = Ciclo_Materia(codCiclo, ma, hr_m)
+				db.session.add(c_m)
+				db.session.commit()
+				materias.reverse()
 
 			flash("Ciclo de estudos registrado com sucesso!", "success")
 			return (redirect("/ciclos"))

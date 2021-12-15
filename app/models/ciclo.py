@@ -22,8 +22,8 @@ class CicloDeEstudos(db.Model):
 class Ciclo_Materia(db.Model):
     __tablename__="Ciclo_Materia"
     horasDia_materia = db.Column(db.Float)
-    codCiclo = db.Column(db.Integer, db.ForeignKey("CicloDeEstudos.codCiclo"), primary_key=True)
-    codMateria = db.Column(db.Integer, db.ForeignKey("Materia.codMateria"), primary_key=True)
+    codCiclo = db.Column(db.Integer, primary_key=True)
+    codMateria = db.Column(db.Integer, primary_key=True)
 
     def __init__(self, codCiclo, codMateria, hr_m):
         self.codCiclo = codCiclo
