@@ -15,8 +15,6 @@ class CicloDeEstudos(db.Model):
         self.inicioCiclo = inicioCiclo
         self.fimCiclo  = fimCiclo
         self.horasDiarias = horasDiarias
-
-        return self.codCiclo
         
     def __repr__(self):
         return "<Ciclo de estudos: {}>".format(self.codCiclo)
