@@ -388,7 +388,7 @@ def adicionarC():
 				materias.reverse()
 
 			flash("Ciclo de estudos registrado com sucesso!", "success")
-			return (redirect("/ciclos"))
+			return redirect(url_for('ciclos', codCiclo=ciclo.codCiclo))
 
 		elif len(form.errors.items()) > 0:
 			for campo, mensagens in form.errors.items():				
@@ -399,16 +399,15 @@ def adicionarC():
 		return render_template('ciclodeestudos/novo_ciclo.html', form=form)
 
 # Ciclo de Estudos
-@app.route('/ciclos')
-def ciclos():
+@app.route('/ciclos/<codCiclo>', methods=['GET', 'POST'])
+def ciclos(codCiclo):
 	if not current_user.is_authenticated:
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
 	else:
 		id_usuario = current_user.get_id()
-		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario).first()
+		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario, codCiclo=codCiclo).first()
 		if 'ciclo.codCiclo' in locals():
-			codCiclo = ciclo.codCiclo
 			codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
 
 			materias = []
