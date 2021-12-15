@@ -13,6 +13,7 @@ from app import db, lm
 from flask_login import login_user, login_required, current_user
 import bcrypt
 from app import conexao
+import sys
 
 # User Loader
 @lm.user_loader
@@ -333,18 +334,18 @@ def adicionarC():
 		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
 		return redirect('/login')
 	else:
+		id_usuario = current_user.get_id()
 		form = AdicionarCiclos()
+		form.materias.choices = [(row.codMateria, row.nome) for row in Materia.query.filter_by(id_usuario=id_usuario).all()]
 
 		if form.validate_on_submit():
-			id_usuario = current_user.get_id()
 			nome = form.nome.data
 			data_inicial = form.data_inicial.data
 			data_final = form.data_final.data
 			horas_semanais = form.horas_semanais.data
 			materias = form.materias.data
 			
-            # ^^^^^^^^^^^^ Transformar as horas em minutos ^^^^^^^^^^^^^^^^
-			minutos_diarios = 0
+			minutos_diarios = horas_semanais*60
 
 			# Executa o comando:
 			ciclo = CicloDeEstudos(id_usuario, nome, data_inicial, data_final, horas_semanais)
@@ -357,9 +358,9 @@ def adicionarC():
 			# Aqui pode pedir uma confirmação
 			db.session.commit()
 
-			peso_final = []
-			media_m = []
-			hr_m = []
+			peso_final = [] * 20
+			media_m = [] * 20
+			hr_m = [] * 20
 			
 			for m in materias:
 				materia_db = Materia.query.filter_by(codMateria=m).first()
@@ -388,9 +389,9 @@ def adicionarC():
 			for campo, mensagens in form.errors.items():				
 				for m in mensagens:
 					flash(m, "danger")
-			return (redirect("/ciclos/novo_ciclo.html"))
+			return (redirect("/ciclos/adicionar"))
 
-		return render_template('ciclos/novo_ciclo.html', form=form)
+		return render_template('ciclodeestudos/novo_ciclo.html', form=form)
 
 # Ciclo de Estudos
 @app.route('/ciclos')
@@ -403,19 +404,33 @@ def ciclos():
 		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id_usuario).first()
 		if 'ciclo.codCiclo' in locals():
 			codCiclo = ciclo.codCiclo
-			codMaterias = Ciclo_Materia.query.fliter_by(codCiclo=codCiclo).all()
+			codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
 
 			materias = []
 			minutos = []
 
 			for cd in codMaterias:
-				m = Materia.query.fliter_by(cd=cd).first()
+				m = Materia.query.filter_by(c=cd).first()
 				materias = m.nome
 			for c in codMaterias:
-				d = codMaterias = Ciclo_Materia.query.fliter_by(codCiclo=codCiclo, c=c).first()
+				d = codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo, c=c).first()
 				minutos = d.horasDia_materia
 					
 			return render_template('ciclodeestudos/detalhes_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo, materias=materias, minutos=minutos)			
 		else:
-			flash('Não há ciclos cadastrados.', 'warning')
-			return redirect('/home')
+			# flash('Não há ciclos cadastrados.', 'warning')
+			# return redirect('/home')
+			codCiclo = ciclo.codCiclo
+			codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+
+			materias = []
+			minutos = []
+
+			for cd in codMaterias:
+				m = Materia.query.filter_by(codMateria=cd.codMateria).first()
+				materias.append(m.nome)
+			for c in codMaterias:
+				d = codMaterias = Ciclo_Materia.query.filter_by(codCiclo=codCiclo, codMateria=c.codMateria).first()
+				minutos.append(d.horasDia_materia)
+					
+			return render_template('ciclodeestudos/detalhes_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo, materias=materias, minutos=minutos)

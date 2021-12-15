@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Novo ciclo de estudos </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+  {% extends 'base.html' %}
+
+  {% block conteudo %}
+
+  {% set mensagens = get_flashed_messages(with_categories=true) %}
+  {% if mensagens %}
+  {% for categoria, msg in mensagens %}
+  <div class="alert alert-{{categoria}}" role="alert">
+    {{ msg }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <main class="form-novo_ciclo">
+
+    <form class="form-novo_ciclo" action="/ciclos/adicionar" method="POST">
+      {{ form.csrf_token() }}
+      <h2 class="h2 mb-3 fw-normal"> <b>Crie um novo ciclo</b> </h2>
+
+      <div class="form-input">
+        <label for="floatingInput">Nome do Ciclo:</label>
+        {{ form.nome(class="form-control", placeholder="Insira o nome do seu ciclo:") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Data de início: </label>
+        {{ form.data_inicial(class="form-control", placeholder="Indique uma data para iniciar o seu ciclo:") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Data do Fim:</label>
+        {{ form.data_final(class="form-control", placeholder="Indique uma data para terminar o seu ciclo:") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Horas semanais:</label>
+        {{ form.horas_semanais(class="form-control", placeholder="Defina quantas horas semanais você irá estudar...") }}
+      </div>
+
+      <div class="form-input">
+        <label for="floatingInput">Matérias</label>
+        {{ form.materias(class="form-control", placeholder="Selecione as matérias que serão estudadas nesse ciclo:") }}
+        <!-- {{ form.materias(class="form-control", placeholder="Selecione as matérias que serão estudadas nesse ciclo:", style = "height: 32px;") }} -->
+      </div>
+
+      {{ form.adicionar(class="btn btn-primary")}}<br />
+    </form>
+
+  </main>
+
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">&copy; 2021 StudyFlow, IFRN </span>
+      </div>
+    </footer>
+  </div>
+
+  {% endblock %}
+</body>
+
+</html>

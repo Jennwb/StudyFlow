@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipleField
 from wtforms.validators import InputRequired, Email, EqualTo, NumberRange
-from wtforms.fields import EmailField, DateTimeField, DateField, DecimalField, SelectField
+from wtforms.fields import EmailField, DateTimeField, DateField, IntegerField, SelectField
 import datetime
 
 class LoginForm(FlaskForm):
@@ -55,13 +55,16 @@ class AdicionarCiclos(FlaskForm):
                 
     nome = StringField("nome", validators=[InputRequired()])
 
-    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y',)
-    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y')
-    # data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y',)
-    # data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired(), datafinal_inicial], format='%d-%m-%Y')
+    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%Y-%m-%d',)
+    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%Y-%m-%d')
+    # data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y',)
+    # data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y')
 
-    horas_semanais = DecimalField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], places=3)
-    materias = SelectMultipleField('tipo', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')], validators=[InputRequired()])
+    horas_semanais = IntegerField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], default="1")
+
+    # Depois transformar em checkbox
+    materias = SelectMultipleField('materias', choices=[(1, 'Label 1'), (1000, 'Label 2')], coerce=int, validators=[InputRequired()])
+    # materias = SelectMultipleField('materias', choices=[], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")
 
     
