@@ -4,7 +4,7 @@ from app import app
 from flask import render_template
 from flask import request, session
 from flask import flash, redirect, url_for
-from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes, EditarLembretes, AdicionarCiclos
+from app.forms import LoginForm, RegistrarForm, AdicionarMaterias, EditarMaterias, AdicionarLembretes, EditarLembretes, AdicionarCiclos, EditarCiclo
 from app.models.usuario import Usuario
 from app.models.materia import Materia
 from app.models.lembrete import Lembrete
@@ -319,14 +319,6 @@ def excluirL(codLembrete):
 
 
 
-
-
-
-
-
-
-
-
 # Ciclos - adicionar
 @app.route('/ciclos/adicionar', methods=['GET', 'POST'])
 def adicionarC():
@@ -438,3 +430,105 @@ def ciclos(codCiclo):
 				minutos.append(d.horasDia_materia)
 					
 			return render_template('ciclodeestudos/detalhes_ciclo.html', title='Ciclo de Estudos', ciclo=ciclo, materias=materias, minutos=minutos)
+
+# Ciclos - editar
+@app.route('/ciclos/editar/<codCiclo>', methods=['GET', 'POST'])
+def editarC(codCiclo):
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		codCiclo = codCiclo
+		ciclo = CicloDeEstudos.query.filter_by(codCiclo=codCiclo).first()
+		c_m = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+		default_m = [] * len(c_m)
+		for cm in c_m:
+			default_m.append(cm.codMateria)
+		id = ciclo.id_usuario
+		
+		if (current_user.get_id() == id):
+			form = EditarCiclo(nome=ciclo.nome_ciclo, data_inicial=ciclo.inicioCiclo, data_final=ciclo.fimCiclo, horas_semanais=ciclo.horasDiarias, materias=default_m)
+			form.materias.choices = [(row.codMateria, row.nome) for row in Materia.query.filter_by(id_usuario=id).all()]
+			if form.validate_on_submit():
+				ciclo = CicloDeEstudos.query.filter_by(codCiclo=codCiclo).first()
+				ciclo.nome_ciclo = form.nome.data
+				ciclo.inicioCiclo = form.data_inicial.data
+				ciclo.fimCiclo = form.data_final.data
+				ciclo.horasDiarias = form.horas_semanais.data
+
+				db.session.add(ciclo)
+				db.session.commit()
+
+				horas_semanais = form.horas_semanais.data
+				materias = form.materias.data
+
+				minutos_diarios = horas_semanais*60
+
+				ultimo = materias.pop()
+				materias.append(ultimo)
+				n_indices = ultimo + 2
+
+				peso_final = [] * n_indices
+				media_m = [] * n_indices
+				hr_m = 0
+				
+				for m in materias:
+					materia_db = Materia.query.filter_by(codMateria=m).first()
+					peso_prova = materia_db.pesoProva
+					nivel_afinidade = materia_db.nivelAfinidade
+
+					peso_final.insert(m, peso_prova + nivel_afinidade)
+
+				peso_total = sum(peso_final)
+
+				# Limpando tabela Ciclo_Materia
+				ciclo_materia_e = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+				for cme in ciclo_materia_e:
+					db.session.delete(cme)
+					db.session.commit()
+				
+				for ma in materias:
+					materias.reverse()
+
+					pf = peso_final.pop()
+					media_m.insert(ma, (pf / peso_total))
+					mm = media_m.pop()
+					hr_m = mm * minutos_diarios
+					c_m = Ciclo_Materia(ciclo.codCiclo, ma, hr_m)
+					db.session.add(c_m)
+					db.session.commit()
+					materias.reverse()
+
+	            # Aqui pode pedir uma confirmação
+
+				flash("Ciclo de estudos atualizado com sucesso!", "success")
+				return redirect(url_for('ciclos', codCiclo=ciclo.codCiclo))
+
+			elif len(form.errors.items()) > 0:
+				for campo, mensagens in form.errors.items():
+					for m in mensagens:
+						flash(m, "danger")
+				return (redirect("/ciclodeestudos/editar_ciclo.html"))
+
+			return render_template('/ciclodeestudos/editar_ciclo.html', form=form, ciclo=ciclo)
+
+# Ciclos - excluir
+@app.route('/ciclos/excluir/<codCiclo>', methods=['GET', 'POST'])
+def excluirC(codCiclo):
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		codCiclo = codCiclo
+		ciclo = CicloDeEstudos.query.filter_by(codCiclo=codCiclo).first()
+		c_m = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+		id = ciclo.id_usuario
+		if (current_user.get_id() == id):
+			for cm in c_m:
+				db.session.delete(cm)
+				db.session.commit()
+
+			db.session.delete(ciclo)
+			db.session.commit()
+			
+			return (redirect("/home"))

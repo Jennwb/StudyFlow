@@ -67,4 +67,29 @@ class AdicionarCiclos(FlaskForm):
     # materias = SelectMultipleField('materias', choices=[], validators=[InputRequired()])
     adicionar = SubmitField("Pronto!")
 
+class EditarCiclo(FlaskForm):
+
+    # CHECAR SE AS DATAS FAZEM SENTIDO
+
+    # def checar_datas(form, field):
+    #         result = super(EditarCiclo, field).validate()
+    #         if (field.startdate.data>field.enddate.data):
+    #             return False
+    #         else:
+    #             return result
+                
+    nome = StringField("nome", validators=[InputRequired()])
+
+    data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%Y-%m-%d',)
+    data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%Y-%m-%d')
+    # data_inicial = DateField('data_inicial', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y',)
+    # data_final = DateField('data_final', default=datetime.date.today, validators=[InputRequired()], format='%d-%m-%Y')
+
+    horas_semanais = IntegerField("horas_semanais", validators=[InputRequired(), NumberRange(min=1, max=168, message="Coloque um número de horas realista")], default="1")
+
+    # Depois transformar em checkbox
+    materias = SelectMultipleField('materias', choices=[(1, 'Label 1'), (1000, 'Label 2')], default=(1, 1000), coerce=int, validators=[InputRequired()])
+    # materias = SelectMultipleField('materias', choices=[], validators=[InputRequired()])
+    adicionar = SubmitField("Pronto!")
+
     
