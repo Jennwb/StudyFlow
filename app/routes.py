@@ -27,16 +27,33 @@ def index():
 	if not current_user.is_authenticated:
 		return render_template('index.html', title='Study Flow')
 	else:
-		return render_template('home.html', title='Study Flow')
-
+		return (redirect(url_for('home')))
+		
 # Home
 @app.route('/home')
 def home():
-    if not current_user.is_authenticated:
-        flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
-        return redirect('/login')
-    else:
-        return render_template('home.html', title='Study Flow')
+	if not current_user.is_authenticated:
+		flash('Apressadinho! Logue na sua conta primeiro.', 'warning')
+		return redirect('/login')
+	else:
+		id = current_user.get_id()
+		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id).first()
+		if 'ciclo.codCiclo' in locals():
+			return render_template('home.html', title='Study Flow')			
+		else:
+			codCiclo = ciclo.codCiclo
+			Ciclo_m = Ciclo_Materia.query.filter_by(codCiclo=codCiclo).all()
+
+			materias = []
+			minutos = []
+
+			for cd in Ciclo_m:
+				m = Materia.query.filter_by(codMateria=cd.codMateria).first()
+				materias.append(m.nome)
+			for c in Ciclo_m:
+				d = Ciclo_Materia.query.filter_by(codCiclo=codCiclo, codMateria=c.codMateria).first()
+				minutos.append(d.horasDia_materia)
+			return render_template('home.html', title='Study Flow', ciclo=ciclo, materias=materias, minutos=minutos)
 
 
 

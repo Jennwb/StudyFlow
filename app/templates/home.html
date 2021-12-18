@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,9 +18,11 @@
     <div class="main-content">
         <div class="main-content-title">
             <h2> Meu Flow </h2>
-            <p> Seu ciclo de estudos personalizado especialmente para você, basta adicionar suas disciplinas do momento para melhorar seu gerenciamento de tempo. </p>
+            <p> Seu ciclo de estudos personalizado especialmente para você, basta adicionar suas disciplinas do momento
+                para melhorar seu gerenciamento de tempo. </p>
         </div>
         <div class="container-ciclo">
+            <canvas class="d-flex flex-row-reverse" id="myChart" width="300" height="300"></canvas>
         </div>
     </div>
 
@@ -29,11 +32,61 @@
         </div>
         <a href="#" class="btn-edit"> Editar </a>
     </div>
-    
+
+    <script>
+        let ctx = document.getElementById('myChart').getContext('2d');
+        const materias = [];
+        const minutos = [];
+    </script>
+
+    {% for materia in materias %}
+    <script> materias.push('{{ materia }}');</script>
+    {% endfor %}
+
+    {% for minutos in minutos %}
+    <script> minutos.push('{{ minutos }}');</script>
+    {% endfor %}
+
+    <script>
+        let myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: materias,
+                datasets: [{
+                    data: minutos,
+                    backgroundColor: [
+                        '#76CFBB', '#5781B4', '#FF868A', '#FFCB37', '#A58ACF', '#5BB54E', '#9C4953', '#D5B3AE', '#CFA26B', '#3D8273', '#599C8D'
+                    ],
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'center'
+                    }
+                }]
+            },
+            options: {
+                tooltips: {
+                    mode: 'label',
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var indice = tooltipItem.index;
+                            var minutos = data.datasets[0].data[indice];
+                            var horas = Math.floor(minutos / 60);
+                            var min = minutos % 60;
+                            var textoHoras = (`00${horas}`).slice(-2);
+                            var textoMinutos = (`00${min}`).slice(-2);
+                            return data.labels[indice] + ': ' + textoHoras + 'h' + textoMinutos + 'min';
+                        }
+                    }
+                }
+            },
+        });
+    </script>
+
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     {% endblock %}
 
 </body>
+
 </html>
