@@ -15,26 +15,30 @@
 
     {% block conteudo %}
 
-    <div class="main-content">
-        <div class="main-content-title">
-            <h2> Meu Flow </h2>
-            <p> Seu ciclo de estudos personalizado especialmente para você, basta adicionar suas disciplinas do momento
-                para melhorar seu gerenciamento de tempo. </p>
+    <div class="grid-container container align-self-center">
+        <div class="main-content flex-column">
+            <span class="main-content-title">
+                <h2> Meu Flow </h2>
+                <p> Seu ciclo de estudos personalizado especialmente para você, basta adicionar suas disciplinas do
+                    momento para melhorar seu gerenciamento de tempo. </p>
+            </span>
+            <canvas class="d-flex" id="grafico_ciclo" width="400" height="400"></canvas>
         </div>
-        <div class="container-ciclo">
-            <canvas class="d-flex flex-row-reverse" id="myChart" width="300" height="300"></canvas>
-        </div>
-    </div>
 
-    <div class="horas-estudadas">
-        <div class="horas-estudadas-title">
-            <h2> Horas estudadas </h2>
+        <div class="d-flex horas-estudadas flex-column">
+            <span class="horas-estudadas-title">
+                <h2> Horas estudadas </h2>
+            </span>
+            <canvas class="d-flex" id="horas_estudadas" width="312" height="283"></canvas>
+            <div class="horas-estudadas-btns d-flex align-items-end">
+                <a href="#" class="btn btn-edit"> Editar </a>
+                <a href="#" class="btn btn-add"> Adicionar </a>
+            </div>
         </div>
-        <a href="#" class="btn-edit"> Editar </a>
     </div>
 
     <script>
-        let ctx = document.getElementById('myChart').getContext('2d');
+        let ctx = document.getElementById('grafico_ciclo').getContext('2d');
         const materias = [];
         const minutos = [];
     </script>
@@ -48,7 +52,7 @@
     {% endfor %}
 
     <script>
-        let myChart = new Chart(ctx, {
+        let grafico_ciclo = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: materias,
