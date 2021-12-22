@@ -1,7 +1,3 @@
-# from types import NoneType
-
-# ^^^ Essa linha ta causando erro no heroku ^^^
-
 from flask_login.utils import logout_user
 from app import app
 from flask import render_template
@@ -17,6 +13,8 @@ from flask_login import login_user, login_required, current_user
 import bcrypt
 from app import conexao
 import sys
+
+NoneType = type(None)
 
 # User Loader
 @lm.user_loader
