@@ -1,4 +1,7 @@
 # from types import NoneType
+
+# ^^^ Essa linha ta causando erro no heroku ^^^
+
 from flask_login.utils import logout_user
 from app import app
 from flask import render_template
