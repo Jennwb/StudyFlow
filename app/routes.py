@@ -39,7 +39,7 @@ def home():
 	else:
 		id = current_user.get_id()
 		ciclo = CicloDeEstudos.query.filter_by(id_usuario=id).first()
-		if 'ciclo.codCiclo' in locals():
+		if 'ciclo.codCiclo' != NoneType:
 			return render_template('home.html', title='Study Flow')			
 		else:
 			codCiclo = ciclo.codCiclo

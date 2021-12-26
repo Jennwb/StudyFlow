@@ -10,7 +10,9 @@
 </head>
 
 <body>
-    {% extends 'base.html' %}
+    {% extends 'sidebar.html' %}
+
+    {% set active_page = "lembretes" %}
 
     {% block conteudo %}
 
@@ -23,7 +25,7 @@
     {% endfor %}
     {% endif %}
 
-    <main class="form-editar_lembrete">
+    <main class="form form-editar_lembrete">
 
         <form class="form-editar_lembrete" action="{{ url_for('editarL', codLembrete=lembrete.codLembrete) }}" method="POST">
             {{ form.csrf_token() }}

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Novo ciclo de estudos </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar\.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 
 <body>
@@ -15,18 +15,7 @@
 
     {% block conteudo %}
 
-    <div class="mx-auto">
-        <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
-            TÍTULO
-        </h5>
-        <div style='width: 550px;'>
-            <canvas class="d-flex flex-row-reverse" id="myChart" width="300" height="300"></canvas>
-        </div>
-        
-    </div>
-
     <script>
-        let ctx = document.getElementById('myChart').getContext('2d');
         const materias = [];
         const minutos = [];
     </script>
@@ -38,6 +27,20 @@
     {% for minutos in minutos %}
     <script> minutos.push('{{ minutos }}');</script>
     {% endfor %}
+
+    <div class="mx-auto">
+        <h5 class="h3 mb-3 mt-3 display-7 fw-bold text-center">
+            TÍTULO
+        </h5>
+        <div style='width: 550px;'>
+            <canvas class="ciclo" id="myChart" width="500" height="500"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        let ctx = document.getElementById('myChart').getContext('2d');
+    </script>
 
     {% endblock %}
 </body>

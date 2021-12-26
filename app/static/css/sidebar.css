@@ -80,3 +80,20 @@ body {
     line-height: 60px;
     white-space: normal;
 }
+
+.logo{
+    position: fixed;
+    top: 40px;
+    left: 40px;
+    width: 230px;
+    height: 16px;
+}
+
+.logo a{
+    font-size: 20px;
+    color: #fff;
+    position: absolute;
+    top: 15px;
+    left: 60px;
+    text-decoration: none;
+}

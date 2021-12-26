@@ -13,6 +13,8 @@
 
   {% extends 'sidebar.html' %}
 
+  {% set active_page = "lembretes" %}
+
   {% block conteudo %}
 
   {% set mensagens = get_flashed_messages(with_categories=true) %}
@@ -24,7 +26,7 @@
   {% endfor %}
   {% endif %}
 
-  <main class="form-novo_lembrete">
+  <main class="form form-novo_lembrete">
 
     <form class="form-novo_lembrete" action="/lembretes/adicionar" method="POST">
       {{ form.csrf_token() }}

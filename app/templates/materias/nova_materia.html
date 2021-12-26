@@ -13,6 +13,8 @@
 
   {% extends 'sidebar.html' %}
 
+  {% set active_page = "materias" %}
+
   {% block conteudo %}
 
   {% set mensagens = get_flashed_messages(with_categories=true) %}
@@ -24,7 +26,7 @@
   {% endfor %}
   {% endif %}
 
-  <main class="form-nova_materia">
+  <main class="form form-nova_materia">
 
     <form class="form-nova_materia" action="/materias/adicionar" method="POST">
       {{ form.csrf_token() }}

@@ -6,11 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Editar Matéria </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
 </head>
 
 <body>
-    {% extends 'base.html' %}
+    {% extends 'sidebar.html' %}
+
+    {% set active_page = "materias" %}
 
     {% block conteudo %}
 
@@ -23,7 +25,7 @@
     {% endfor %}
     {% endif %}
 
-    <main class="form-editar_materia">
+    <main class="form form-editar_materia">
 
         <form class="form-editar_materia" action="{{ url_for('editar', codMateria=materia.codMateria) }}" method="POST">
             {{ form.csrf_token() }}

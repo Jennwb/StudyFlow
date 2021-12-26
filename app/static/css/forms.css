@@ -87,27 +87,10 @@ input#entrar.btn.btn-primary:hover, input#registrar.btn.btn-primary:hover {
     font-weight: bold;
 }
 
-.form-novo_ciclo{
+.form{
     max-width: 500px;
     margin: auto;
     margin-top: 50px;
-}
-
-.logo{
-    position: fixed;
-    top: 40px;
-    left: 40px;
-    width: 230px;
-    height: 16px;
-}
-
-.logo a{
-    font-size: 20px;
-    color: #fff;
-    position: absolute;
-    top: 15px;
-    left: 60px;
-    text-decoration: none;
 }
 
 .form-input{
